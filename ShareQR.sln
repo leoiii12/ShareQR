@@ -5,7 +5,7 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "ShareQR", "ShareQR\ShareQR.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShareQR.iOS", "iOS\ShareQR.iOS.csproj", "{137BCB79-038A-4E17-B250-00E3240C2B85}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShareAsQR", "ShareAsQR\ShareAsQR.csproj", "{21C664CC-828B-4D8D-8569-B7FE8F080C47}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShareAsQRExtension", "ShareAsQRExtension\ShareAsQRExtension.csproj", "{D7B4256F-6A73-40B8-B745-E62E6B947CA6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,13 +23,13 @@ Global
 		{137BCB79-038A-4E17-B250-00E3240C2B85}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
 		{137BCB79-038A-4E17-B250-00E3240C2B85}.Debug|iPhone.ActiveCfg = Debug|iPhone
 		{137BCB79-038A-4E17-B250-00E3240C2B85}.Debug|iPhone.Build.0 = Debug|iPhone
-		{21C664CC-828B-4D8D-8569-B7FE8F080C47}.Debug|iPhoneSimulator.ActiveCfg = Debug|iPhoneSimulator
-		{21C664CC-828B-4D8D-8569-B7FE8F080C47}.Debug|iPhoneSimulator.Build.0 = Debug|iPhoneSimulator
-		{21C664CC-828B-4D8D-8569-B7FE8F080C47}.Release|iPhone.ActiveCfg = Release|iPhone
-		{21C664CC-828B-4D8D-8569-B7FE8F080C47}.Release|iPhone.Build.0 = Release|iPhone
-		{21C664CC-828B-4D8D-8569-B7FE8F080C47}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
-		{21C664CC-828B-4D8D-8569-B7FE8F080C47}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
-		{21C664CC-828B-4D8D-8569-B7FE8F080C47}.Debug|iPhone.ActiveCfg = Debug|iPhone
-		{21C664CC-828B-4D8D-8569-B7FE8F080C47}.Debug|iPhone.Build.0 = Debug|iPhone
+		{D7B4256F-6A73-40B8-B745-E62E6B947CA6}.Debug|iPhoneSimulator.ActiveCfg = Debug|iPhoneSimulator
+		{D7B4256F-6A73-40B8-B745-E62E6B947CA6}.Debug|iPhoneSimulator.Build.0 = Debug|iPhoneSimulator
+		{D7B4256F-6A73-40B8-B745-E62E6B947CA6}.Release|iPhone.ActiveCfg = Release|iPhone
+		{D7B4256F-6A73-40B8-B745-E62E6B947CA6}.Release|iPhone.Build.0 = Release|iPhone
+		{D7B4256F-6A73-40B8-B745-E62E6B947CA6}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
+		{D7B4256F-6A73-40B8-B745-E62E6B947CA6}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
+		{D7B4256F-6A73-40B8-B745-E62E6B947CA6}.Debug|iPhone.ActiveCfg = Debug|iPhone
+		{D7B4256F-6A73-40B8-B745-E62E6B947CA6}.Debug|iPhone.Build.0 = Debug|iPhone
 	EndGlobalSection
 EndGlobal

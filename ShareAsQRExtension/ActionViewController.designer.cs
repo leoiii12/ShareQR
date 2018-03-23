@@ -8,7 +8,7 @@ using Foundation;
 using System;
 using System.CodeDom.Compiler;
 
-namespace ShareAsQR
+namespace ShareAsQRExtension
 {
     [Register ("ActionViewController")]
     partial class ActionViewController

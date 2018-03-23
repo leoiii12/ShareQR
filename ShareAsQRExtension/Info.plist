@@ -3,11 +3,11 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDisplayName</key>
-	<string>ShareAsQR</string>
+	<string>ShareAsQRExtension</string>
 	<key>CFBundleName</key>
-	<string>ShareAsQR</string>
+	<string>ShareAsQRExtension</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.ettech.ShareQR.ShareAsQR</string>
+	<string>com.ettech.ShareQR.ShareAsQRExtension</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleInfoDictionaryVersion</key>

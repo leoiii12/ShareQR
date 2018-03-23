@@ -5,7 +5,7 @@ using Foundation;
 using UIKit;
 using QRCoder;
 
-namespace ShareAsQR
+namespace ShareAsQRExtension
 {
     public partial class ActionViewController : UIViewController
     {
