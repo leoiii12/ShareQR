@@ -20,6 +20,9 @@ namespace ShareAsQRExtension
             base.DidReceiveMemoryWarning();
 
             // Release any cached data, images, etc that aren't in use.
+
+            if (imageView.Image != null)
+                imageView.Image.Dispose();
         }
 
         public override bool PrefersStatusBarHidden()
@@ -27,12 +30,17 @@ namespace ShareAsQRExtension
             return false;
         }
 
-        public override bool ShouldAutorotate()
-        {
-            return false;
-        }
+		public override UIInterfaceOrientation PreferredInterfaceOrientationForPresentation()
+		{
+            return UIInterfaceOrientation.Portrait;
+		}
 
-        public override void ViewDidLoad()
+		public override UIInterfaceOrientationMask GetSupportedInterfaceOrientations()
+		{
+            return UIInterfaceOrientationMask.Portrait;
+		}
+
+		public override void ViewDidLoad()
         {
             base.ViewDidLoad();
 
@@ -61,8 +69,11 @@ namespace ShareAsQRExtension
                             NSOperationQueue.MainQueue.AddOperation(delegate
                             {
                                 imageView.Image = image;
-                                imageView.SetNeedsUpdateConstraints();
                             });
+
+                            qrCodeGenerator.Dispose();
+                            qrCodeData.Dispose();
+                            qrCode.Dispose();
                         });
 
                         imageFound = true;
