@@ -14,6 +14,7 @@ namespace ShareAsQRExtension
     partial class ActionViewController
     {
         [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UIImageView imageView { get; set; }
 
         [GeneratedCode ("iOS Designer", "1.0")]

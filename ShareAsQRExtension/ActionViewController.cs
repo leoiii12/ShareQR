@@ -22,6 +22,16 @@ namespace ShareAsQRExtension
             // Release any cached data, images, etc that aren't in use.
         }
 
+        public override bool PrefersStatusBarHidden()
+        {
+            return false;
+        }
+
+        public override bool ShouldAutorotate()
+        {
+            return false;
+        }
+
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
@@ -48,10 +58,10 @@ namespace ShareAsQRExtension
 
                             // This is an image. We'll load it, then place it in our image view.
                             var image = UIImage.LoadFromData(NSData.FromArray(qrCodeAsBitmapByteArr));
-
                             NSOperationQueue.MainQueue.AddOperation(delegate
                             {
                                 imageView.Image = image;
+                                imageView.SetNeedsUpdateConstraints();
                             });
                         });
 
