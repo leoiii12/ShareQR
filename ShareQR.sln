@@ -1,0 +1,35 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "ShareQR", "ShareQR\ShareQR.shproj", "{0A0AD393-FF1E-4A4C-92A4-384645D84404}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShareQR.iOS", "iOS\ShareQR.iOS.csproj", "{137BCB79-038A-4E17-B250-00E3240C2B85}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShareAsQR", "ShareAsQR\ShareAsQR.csproj", "{21C664CC-828B-4D8D-8569-B7FE8F080C47}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|iPhoneSimulator = Debug|iPhoneSimulator
+		Release|iPhone = Release|iPhone
+		Release|iPhoneSimulator = Release|iPhoneSimulator
+		Debug|iPhone = Debug|iPhone
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{137BCB79-038A-4E17-B250-00E3240C2B85}.Debug|iPhoneSimulator.ActiveCfg = Debug|iPhoneSimulator
+		{137BCB79-038A-4E17-B250-00E3240C2B85}.Debug|iPhoneSimulator.Build.0 = Debug|iPhoneSimulator
+		{137BCB79-038A-4E17-B250-00E3240C2B85}.Release|iPhone.ActiveCfg = Release|iPhone
+		{137BCB79-038A-4E17-B250-00E3240C2B85}.Release|iPhone.Build.0 = Release|iPhone
+		{137BCB79-038A-4E17-B250-00E3240C2B85}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
+		{137BCB79-038A-4E17-B250-00E3240C2B85}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
+		{137BCB79-038A-4E17-B250-00E3240C2B85}.Debug|iPhone.ActiveCfg = Debug|iPhone
+		{137BCB79-038A-4E17-B250-00E3240C2B85}.Debug|iPhone.Build.0 = Debug|iPhone
+		{21C664CC-828B-4D8D-8569-B7FE8F080C47}.Debug|iPhoneSimulator.ActiveCfg = Debug|iPhoneSimulator
+		{21C664CC-828B-4D8D-8569-B7FE8F080C47}.Debug|iPhoneSimulator.Build.0 = Debug|iPhoneSimulator
+		{21C664CC-828B-4D8D-8569-B7FE8F080C47}.Release|iPhone.ActiveCfg = Release|iPhone
+		{21C664CC-828B-4D8D-8569-B7FE8F080C47}.Release|iPhone.Build.0 = Release|iPhone
+		{21C664CC-828B-4D8D-8569-B7FE8F080C47}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
+		{21C664CC-828B-4D8D-8569-B7FE8F080C47}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
+		{21C664CC-828B-4D8D-8569-B7FE8F080C47}.Debug|iPhone.ActiveCfg = Debug|iPhone
+		{21C664CC-828B-4D8D-8569-B7FE8F080C47}.Debug|iPhone.Build.0 = Debug|iPhone
+	EndGlobalSection
+EndGlobal
