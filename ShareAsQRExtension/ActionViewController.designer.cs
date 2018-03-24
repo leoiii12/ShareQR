@@ -15,16 +15,29 @@ namespace ShareAsQRExtension
     {
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIBarButtonItem doneButton { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UIImageView imageView { get; set; }
 
         [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UIView view { get; set; }
 
         [Action ("DoneClicked:")]
-        partial void DoneClicked (Foundation.NSObject sender);
+        partial void DoneClicked (UIKit.UIBarButtonItem sender);
+
+        [Action ("SaveClicked:")]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        partial void SaveClicked (UIKit.UIBarButtonItem sender);
 
         void ReleaseDesignerOutlets ()
         {
+            if (doneButton != null) {
+                doneButton.Dispose ();
+                doneButton = null;
+            }
+
             if (imageView != null) {
                 imageView.Dispose ();
                 imageView = null;
