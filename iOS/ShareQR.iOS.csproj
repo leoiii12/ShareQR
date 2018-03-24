@@ -93,12 +93,6 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Plugin.Connectivity.Abstractions">
-      <HintPath>..\packages\Xam.Plugin.Connectivity.3.1.1\lib\Xamarin.iOS10\Plugin.Connectivity.Abstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="Plugin.Connectivity">
-      <HintPath>..\packages\Xam.Plugin.Connectivity.3.1.1\lib\Xamarin.iOS10\Plugin.Connectivity.dll</HintPath>
-    </Reference>
     <Reference Include="Xamarin.Forms.Core">
       <HintPath>..\packages\Xamarin.Forms.2.5.0.280555\lib\Xamarin.iOS10\Xamarin.Forms.Core.dll</HintPath>
     </Reference>
@@ -145,8 +139,11 @@
       <Project>{D7B4256F-6A73-40B8-B745-E62E6B947CA6}</Project>
       <Name>ShareAsQRExtension</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ShareQR\ShareQR.csproj">
+      <Project>{12C22663-4362-4CAB-A2F7-968811149F23}</Project>
+      <Name>ShareQR</Name>
+    </ProjectReference>
   </ItemGroup>
-  <Import Project="..\ShareQR\ShareQR.projitems" Label="Shared" Condition="Exists('..\ShareQR\ShareQR.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Forms.2.5.0.280555\build\netstandard1.0\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.2.5.0.280555\build\netstandard1.0\Xamarin.Forms.targets')" />
 </Project>

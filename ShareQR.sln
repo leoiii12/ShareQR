@@ -1,11 +1,11 @@
 
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "ShareQR", "ShareQR\ShareQR.shproj", "{0A0AD393-FF1E-4A4C-92A4-384645D84404}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShareQR.iOS", "iOS\ShareQR.iOS.csproj", "{137BCB79-038A-4E17-B250-00E3240C2B85}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShareAsQRExtension", "ShareAsQRExtension\ShareAsQRExtension.csproj", "{D7B4256F-6A73-40B8-B745-E62E6B947CA6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShareQR", "ShareQR\ShareQR.csproj", "{12C22663-4362-4CAB-A2F7-968811149F23}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,5 +31,13 @@ Global
 		{D7B4256F-6A73-40B8-B745-E62E6B947CA6}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
 		{D7B4256F-6A73-40B8-B745-E62E6B947CA6}.Debug|iPhone.ActiveCfg = Debug|iPhone
 		{D7B4256F-6A73-40B8-B745-E62E6B947CA6}.Debug|iPhone.Build.0 = Debug|iPhone
+		{12C22663-4362-4CAB-A2F7-968811149F23}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{12C22663-4362-4CAB-A2F7-968811149F23}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{12C22663-4362-4CAB-A2F7-968811149F23}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{12C22663-4362-4CAB-A2F7-968811149F23}.Release|iPhone.Build.0 = Release|Any CPU
+		{12C22663-4362-4CAB-A2F7-968811149F23}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{12C22663-4362-4CAB-A2F7-968811149F23}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{12C22663-4362-4CAB-A2F7-968811149F23}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{12C22663-4362-4CAB-A2F7-968811149F23}.Debug|iPhone.Build.0 = Debug|Any CPU
 	EndGlobalSection
 EndGlobal

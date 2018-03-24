@@ -4,7 +4,7 @@
 <dict>
 	<key>com.apple.security.application-groups</key>
 	<array>
-		<string>com.ettech.ShareQR</string>
+		<string>group.com.ettech.ShareQR</string>
 	</array>
 </dict>
 </plist>

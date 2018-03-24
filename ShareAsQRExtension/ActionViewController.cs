@@ -90,7 +90,7 @@ namespace ShareAsQRExtension
                 {
                     NSOperationQueue.MainQueue.AddOperation(delegate
                     {
-                        this.doneButton.Enabled = true;
+                        this.saveButton.Enabled = true;
                     });
 
                     break;
@@ -107,11 +107,29 @@ namespace ShareAsQRExtension
 
         partial void SaveClicked(UIBarButtonItem sender)
         {
-            var appDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
-            var path = Path.ChangeExtension(Path.Combine(appDirectory, ComputeHashString(this.url)), ".jpg");
+            var fileManager = new NSFileManager();
+            Console.WriteLine(1);
+            Console.WriteLine(fileManager);
+
+            var appGroupContainer = fileManager.GetContainerUrl("group.com.ettech.ShareQR");
+            Console.WriteLine(2);
+            Console.WriteLine(appGroupContainer);
+
+            var appGroupContainerPath = appGroupContainer.Path;
+            Console.WriteLine(3);
+            Console.WriteLine(appGroupContainerPath);
+
+            var path = Path.ChangeExtension(Path.Combine(appGroupContainerPath, ComputeHashString(this.url)), ".jpg");
 
             if (this.qrCodeImage.Save(path, false, out NSError error))
+            {
                 Console.WriteLine("Saved at " + path + ".");
+                NSOperationQueue.MainQueue.AddOperation(delegate
+                {
+                    this.saveButton.Enabled = false;
+                    this.saveButton.Title = "Saved";
+                });
+            }
             else
                 Console.WriteLine("Cannot save because " + error.LocalizedDescription + ".");
         }

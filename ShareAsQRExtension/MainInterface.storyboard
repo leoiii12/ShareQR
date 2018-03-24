@@ -36,7 +36,7 @@
                                                 <action selector="DoneClicked:" destination="ObA-dk-sSI" id="6676"/>
                                             </connections>
                                         </barButtonItem>
-                                        <barButtonItem key="rightBarButtonItem" id="7318" systemItem="save" enabled="NO">
+                                        <barButtonItem key="rightBarButtonItem" id="7318" enabled="NO" title="Save">
                                             <connections>
                                                 <action selector="SaveClicked:" destination="ObA-dk-sSI" id="7331"/>
                                             </connections>
@@ -64,7 +64,7 @@
                     <connections>
                         <outlet property="view" destination="zMn-AG-sqS" id="Qma-de-2ek"/>
                         <outlet property="imageView" destination="4348" id="name-outlet-4348"/>
-                        <outlet property="doneButton" destination="7318" id="name-outlet-7318"/>
+                        <outlet property="saveButton" destination="7318" id="name-outlet-7318"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="X47-rx-isc" userLabel="First Responder" sceneMemberID="firstResponder"/>
