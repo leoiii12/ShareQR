@@ -1,9 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 
 using Xamarin.Forms;
+using Xamarin.Forms.Xaml;
 
-namespace ShareQR
+using ShareQR.Models;
+
+namespace ShareQR.Views
 {
+    [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class NewItemPage : ContentPage
     {
         public Item Item { get; set; }
@@ -24,7 +29,7 @@ namespace ShareQR
         async void Save_Clicked(object sender, EventArgs e)
         {
             MessagingCenter.Send(this, "AddItem", Item);
-            await Navigation.PopToRootAsync();
+            await Navigation.PopModalAsync();
         }
     }
 }

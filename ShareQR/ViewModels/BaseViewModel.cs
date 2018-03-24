@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using ShareQR.Models;
+using ShareQR.Services;
 
 using Xamarin.Forms;
 
-namespace ShareQR
+namespace ShareQR.ViewModels
 {
     public class BaseViewModel : INotifyPropertyChanged
     {

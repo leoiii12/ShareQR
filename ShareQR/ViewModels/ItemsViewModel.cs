@@ -2,10 +2,12 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using ShareQR.Models;
+using ShareQR.Views;
 
 using Xamarin.Forms;
 
-namespace ShareQR
+namespace ShareQR.ViewModels
 {
     public class ItemsViewModel : BaseViewModel
     {

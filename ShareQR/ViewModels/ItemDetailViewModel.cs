@@ -1,6 +1,7 @@
 ﻿using System;
+using ShareQR.Models;
 
-namespace ShareQR
+namespace ShareQR.ViewModels
 {
     public class ItemDetailViewModel : BaseViewModel
     {

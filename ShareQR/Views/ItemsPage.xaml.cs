@@ -1,13 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 using Xamarin.Forms;
+using Xamarin.Forms.Xaml;
 
-namespace ShareQR
+using ShareQR.Models;
+using ShareQR.Views;
+using ShareQR.ViewModels;
+
+namespace ShareQR.Views
 {
-    public partial class ItemsPage : ContentPage
-    {
+	[XamlCompilation(XamlCompilationOptions.Compile)]
+	public partial class ItemsPage : ContentPage
+	{
         ItemsViewModel viewModel;
 
         public ItemsPage()
@@ -25,13 +33,13 @@ namespace ShareQR
 
             await Navigation.PushAsync(new ItemDetailPage(new ItemDetailViewModel(item)));
 
-            // Manually deselect item
+            // Manually deselect item.
             ItemsListView.SelectedItem = null;
         }
 
         async void AddItem_Clicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new NewItemPage());
+            await Navigation.PushModalAsync(new NavigationPage(new NewItemPage()));
         }
 
         protected override void OnAppearing()

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace ShareQR
+namespace ShareQR.Services
 {
     public interface IDataStore<T>
     {

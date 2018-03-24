@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ShareQR.Models;
 
-namespace ShareQR
+namespace ShareQR.Services
 {
     public class MockDataStore : IDataStore<Item>
     {

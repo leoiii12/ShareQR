@@ -1,14 +1,25 @@
 ﻿using System;
 
 using Xamarin.Forms;
+using Xamarin.Forms.Xaml;
 
-namespace ShareQR
+using ShareQR.Models;
+using ShareQR.ViewModels;
+
+namespace ShareQR.Views
 {
-    public partial class ItemDetailPage : ContentPage
-    {
+	[XamlCompilation(XamlCompilationOptions.Compile)]
+	public partial class ItemDetailPage : ContentPage
+	{
         ItemDetailViewModel viewModel;
 
-        // Note - The Xamarin.Forms Previewer requires a default, parameterless constructor to render a page.
+        public ItemDetailPage(ItemDetailViewModel viewModel)
+        {
+            InitializeComponent();
+
+            BindingContext = this.viewModel = viewModel;
+        }
+
         public ItemDetailPage()
         {
             InitializeComponent();
@@ -21,13 +32,6 @@ namespace ShareQR
 
             viewModel = new ItemDetailViewModel(item);
             BindingContext = viewModel;
-        }
-
-        public ItemDetailPage(ItemDetailViewModel viewModel)
-        {
-            InitializeComponent();
-
-            BindingContext = this.viewModel = viewModel;
         }
     }
 }

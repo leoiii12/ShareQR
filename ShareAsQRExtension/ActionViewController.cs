@@ -3,9 +3,9 @@
 using MobileCoreServices;
 using Foundation;
 using UIKit;
-using QRCoder;
-using System.IO;
-using System.Security.Cryptography;
+using ShareQR.Models;
+using ShareQR.Services;
+using ShareQR.ShareAsQRExtension;
 
 namespace ShareAsQRExtension
 {
@@ -16,8 +16,9 @@ namespace ShareAsQRExtension
             // Note: this .ctor should not contain any initialization logic.
         }
 
-        private string url;
-        private NSData qrCodeImage;
+		private FileHelper _fileHelper = new FileHelper();
+        private QRCodeItem _qrCodeItem;
+        private NSData _qrCodeByteBuffer;
 
         public override void DidReceiveMemoryWarning()
         {
@@ -26,8 +27,7 @@ namespace ShareAsQRExtension
 
             // Release any cached data, images, etc that aren't in use.
 
-            if (imageView.Image != null)
-                imageView.Image.Dispose();
+            imageView.Image?.Dispose();
         }
 
         public override bool PrefersStatusBarHidden()
@@ -44,13 +44,15 @@ namespace ShareAsQRExtension
         {
             return UIInterfaceOrientationMask.Portrait;
         }
-
+              
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
+            
+            SQLitePCL.Batteries_V2.Init();
 
-            // Get the item[s] we're handling from the extension context.
 
+                     
             // For example, look for an image and place it into an image view.
             // Replace this with something appropriate for the type[s] your extension supports.
             bool imageFound = false;
@@ -63,18 +65,13 @@ namespace ShareAsQRExtension
                     {
                         itemProvider.LoadItem(UTType.URL, null, delegate (NSObject urlObj, NSError error)
                         {
-                            url = urlObj.ToString();
+                            var url = urlObj.ToString();
+                            Console.WriteLine(url);
 
-                            // Generate QR Code
-                            QRCodeGenerator qrCodeGenerator = new QRCodeGenerator();
-                            QRCodeData qrCodeData = qrCodeGenerator.CreateQrCode(url, QRCodeGenerator.ECCLevel.Q);
-                            BitmapByteQRCode qrCode = new BitmapByteQRCode(qrCodeData);
-                            byte[] qrCodeAsBitmapByteArr = qrCode.GetGraphic(20);
+							_qrCodeItem = new QRCodeItem(_fileHelper, url);
+                            _qrCodeByteBuffer = NSData.FromArray(_qrCodeItem.GenerateQRCodeByteArray());
 
-                            // This is an image. We'll load it, then place it in our image view.
-                            var image = UIImage.LoadFromData(NSData.FromArray(qrCodeAsBitmapByteArr));
-                            qrCodeImage = image.AsJPEG();
-
+                            var image = UIImage.LoadFromData(_qrCodeByteBuffer);
                             NSOperationQueue.MainQueue.AddOperation(delegate
                             {
                                 imageView.Image = image;
@@ -90,7 +87,7 @@ namespace ShareAsQRExtension
                 {
                     NSOperationQueue.MainQueue.AddOperation(delegate
                     {
-                        this.saveButton.Enabled = true;
+                        saveButton.Enabled = true;
                     });
 
                     break;
@@ -107,43 +104,29 @@ namespace ShareAsQRExtension
 
         partial void SaveClicked(UIBarButtonItem sender)
         {
-            var fileManager = new NSFileManager();
-            Console.WriteLine(1);
-            Console.WriteLine(fileManager);
-
-            var appGroupContainer = fileManager.GetContainerUrl("group.com.ettech.ShareQR");
-            Console.WriteLine(2);
-            Console.WriteLine(appGroupContainer);
-
-            var appGroupContainerPath = appGroupContainer.Path;
-            Console.WriteLine(3);
-            Console.WriteLine(appGroupContainerPath);
-
-            var path = Path.ChangeExtension(Path.Combine(appGroupContainerPath, ComputeHashString(this.url)), ".jpg");
-
-            if (this.qrCodeImage.Save(path, false, out NSError error))
+            var path = _qrCodeItem.Path;
+            
+            if (_qrCodeByteBuffer.Save(path, false, out NSError error))
             {
                 Console.WriteLine("Saved at " + path + ".");
                 NSOperationQueue.MainQueue.AddOperation(delegate
                 {
-                    this.saveButton.Enabled = false;
-                    this.saveButton.Title = "Saved";
+                    saveButton.Enabled = false;
+                    saveButton.Title = "Saved";
                 });
+
+				using (var db = ShareQRDbContext.Create(_fileHelper.GetSharedFilePath("ShareQR.db")))
+                {
+                    db.QRCodeItems.Add(_qrCodeItem);
+                    db.SaveChanges();
+                }
             }
             else
-                Console.WriteLine("Cannot save because " + error.LocalizedDescription + ".");
-        }
-
-        private string ComputeHashString(string str)
-        {
-            byte[] computedHash;
-
-            using (var algorithm = SHA256.Create())
             {
-                computedHash = algorithm.ComputeHash(System.Text.Encoding.ASCII.GetBytes(str));
+                Console.WriteLine("Cannot save because " + error.LocalizedDescription + ".");
             }
-
-            return BitConverter.ToString(computedHash);
         }
+
+
     }
 }

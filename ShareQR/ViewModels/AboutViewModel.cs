@@ -3,7 +3,7 @@ using System.Windows.Input;
 
 using Xamarin.Forms;
 
-namespace ShareQR
+namespace ShareQR.ViewModels
 {
     public class AboutViewModel : BaseViewModel
     {

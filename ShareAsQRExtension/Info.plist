@@ -4,6 +4,8 @@
 <dict>
 	<key>CFBundleDisplayName</key>
 	<string>ShareQR</string>
+	<key>CFBundleName</key>
+	<string>ShareAsQRExtension</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.ettech.ShareQR.ShareAsQRExtension</string>
 	<key>CFBundleDevelopmentRegion</key>
@@ -30,7 +32,5 @@
 		<key>NSExtensionPointIdentifier</key>
 		<string>com.apple.ui-services</string>
 	</dict>
-	<key>CFBundleName</key>
-	<string>ShareAsQRExtension</string>
 </dict>
 </plist>

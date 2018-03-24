@@ -20,17 +20,14 @@ namespace ShareAsQRExtension
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UIBarButtonItem saveButton { get; set; }
-
-        [Outlet]
+        
         [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UIView view { get; set; }
 
         [Action ("DoneClicked:")]
-        [GeneratedCode ("iOS Designer", "1.0")]
         partial void DoneClicked (UIKit.UIBarButtonItem sender);
 
         [Action ("SaveClicked:")]
-        [GeneratedCode ("iOS Designer", "1.0")]
         partial void SaveClicked (UIKit.UIBarButtonItem sender);
 
         void ReleaseDesignerOutlets ()

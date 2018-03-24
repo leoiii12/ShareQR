@@ -6,9 +6,9 @@ using Xamarin.Forms.Xaml;
 namespace ShareQR.Views
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class AboutPage : ContentPage
+	public partial class MainPage : TabbedPage
 	{
-		public AboutPage ()
+		public MainPage ()
 		{
 			InitializeComponent ();
 		}
