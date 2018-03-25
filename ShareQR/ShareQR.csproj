@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <Compile Remove="Services\SQLiteDataStore.cs" />
+    <Compile Remove="Services\ItemStore.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Views\AboutPage.xaml.cs">
@@ -25,13 +26,18 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.0" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="11.0.1" />
-    <PackageReference Include="QRCoder" Version="1.3.2" />
     <PackageReference Include="Xamarin.Forms" Version="2.5.1.392594-pre3" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.0.2" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.0.2" />
     <PackageReference Include="Microsoft.AppCenter" Version="1.5.0" />
     <PackageReference Include="Microsoft.AppCenter.Crashes" Version="1.5.0" />
     <PackageReference Include="Microsoft.AppCenter.Analytics" Version="1.5.0" />
+    <PackageReference Include="Autofac" Version="4.6.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ShareQR.Core\ShareQR.Core.csproj" />
+    <ProjectReference Include="..\ShareQR.EntityFrameworkCore\ShareQR.EntityFrameworkCore.csproj" />
   </ItemGroup>
 </Project>

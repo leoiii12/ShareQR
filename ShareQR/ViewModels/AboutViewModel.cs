@@ -5,7 +5,7 @@ using Xamarin.Forms;
 
 namespace ShareQR.ViewModels
 {
-    public class AboutViewModel : BaseViewModel
+    public class AboutViewModel : BaseItemViewModel
     {
         public AboutViewModel()
         {

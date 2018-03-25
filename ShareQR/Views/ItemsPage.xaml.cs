@@ -13,9 +13,9 @@ using ShareQR.ViewModels;
 
 namespace ShareQR.Views
 {
-	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class ItemsPage : ContentPage
-	{
+    [XamlCompilation(XamlCompilationOptions.Compile)]
+    public partial class ItemsPage : ContentPage
+    {
         ItemsViewModel viewModel;
 
         public ItemsPage()
@@ -27,9 +27,8 @@ namespace ShareQR.Views
 
         async void OnItemSelected(object sender, SelectedItemChangedEventArgs args)
         {
-            var item = args.SelectedItem as Item;
-            if (item == null)
-                return;
+            var item = args.SelectedItem as QRCodeItem;
+            if (item == null) return;
 
             await Navigation.PushAsync(new ItemDetailPage(new ItemDetailViewModel(item)));
 
@@ -46,8 +45,8 @@ namespace ShareQR.Views
         {
             base.OnAppearing();
 
-            if (viewModel.Items.Count == 0)
-                viewModel.LoadItemsCommand.Execute(null);
+            if (viewModel.QRCodeItems.Count == 0)
+                viewModel.LoadQRCodeItemsCommand.Execute(null);
         }
     }
 }

@@ -8,19 +8,23 @@ using ShareQR.Models;
 
 namespace ShareQR.Views
 {
+    public class TempQRCodeItem
+    {
+        public string Data { get; set; }
+    }
+
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class NewItemPage : ContentPage
     {
-        public Item Item { get; set; }
+		public TempQRCodeItem TempItem { get; set; }
 
-        public NewItemPage()
+		public NewItemPage()
         {
             InitializeComponent();
 
-            Item = new Item
+            TempItem = new TempQRCodeItem
             {
-                Text = "Item name",
-                Description = "This is an item description."
+                Data = ""
             };
 
             BindingContext = this;
@@ -28,8 +32,9 @@ namespace ShareQR.Views
 
         async void Save_Clicked(object sender, EventArgs e)
         {
-            MessagingCenter.Send(this, "AddItem", Item);
+            MessagingCenter.Send(this, "AddItem", new QRCodeItem(TempItem.Data));
             await Navigation.PopModalAsync();
         }
+
     }
 }

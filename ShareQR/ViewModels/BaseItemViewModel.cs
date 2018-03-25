@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using Autofac;
 using ShareQR.Models;
 using ShareQR.Services;
 
@@ -9,9 +10,17 @@ using Xamarin.Forms;
 
 namespace ShareQR.ViewModels
 {
-    public class BaseViewModel : INotifyPropertyChanged
+    public class BaseItemViewModel : INotifyPropertyChanged
     {
-        public IDataStore<Item> DataStore => DependencyService.Get<IDataStore<Item>>() ?? new MockDataStore();
+        public IQRCodeItemStore DataStore;
+
+        public BaseItemViewModel()
+        {
+            using (var scope = AppContainer.Container.BeginLifetimeScope())
+            {
+                DataStore = AppContainer.Container.Resolve<IQRCodeItemStore>();
+            }
+        }
 
         bool isBusy = false;
         public bool IsBusy
@@ -27,9 +36,7 @@ namespace ShareQR.ViewModels
             set { SetProperty(ref title, value); }
         }
 
-        protected bool SetProperty<T>(ref T backingStore, T value,
-            [CallerMemberName]string propertyName = "",
-            Action onChanged = null)
+        protected bool SetProperty<T>(ref T backingStore, T value, [CallerMemberName]string propertyName = "", Action onChanged = null)
         {
             if (EqualityComparer<T>.Default.Equals(backingStore, value))
                 return false;

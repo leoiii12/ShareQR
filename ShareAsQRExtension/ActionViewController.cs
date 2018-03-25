@@ -4,19 +4,28 @@ using MobileCoreServices;
 using Foundation;
 using UIKit;
 using ShareQR.Models;
+using ShareQR;
+using ShareQR.SQLite;
 using ShareQR.Services;
-using ShareQR.ShareAsQRExtension;
 
+[assembly: Preserve(typeof(System.Linq.Queryable), AllMembers = true)]
 namespace ShareAsQRExtension
 {
     public partial class ActionViewController : UIViewController
     {
         protected ActionViewController(IntPtr handle) : base(handle)
         {
-            // Note: this .ctor should not contain any initialization logic.
+            // Note: this .ctor should not contain any initialization logic. 
+
+            _fileHelper = new FileHelper();
+            _db = new ShareQRDbContext(_fileHelper.GetSharedFilePath("ShareQR.db"));
+            _qrCodeItemStore = new QRCodeItemStore(_db);
         }
 
-		private FileHelper _fileHelper = new FileHelper();
+        private readonly IFileHelper _fileHelper;
+        private readonly ShareQRDbContext _db;
+        private readonly IQRCodeItemStore _qrCodeItemStore;
+
         private QRCodeItem _qrCodeItem;
         private NSData _qrCodeByteBuffer;
 
@@ -26,8 +35,6 @@ namespace ShareAsQRExtension
             base.DidReceiveMemoryWarning();
 
             // Release any cached data, images, etc that aren't in use.
-
-            imageView.Image?.Dispose();
         }
 
         public override bool PrefersStatusBarHidden()
@@ -44,15 +51,11 @@ namespace ShareAsQRExtension
         {
             return UIInterfaceOrientationMask.Portrait;
         }
-              
+
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
-            
-            SQLitePCL.Batteries_V2.Init();
 
-
-                     
             // For example, look for an image and place it into an image view.
             // Replace this with something appropriate for the type[s] your extension supports.
             bool imageFound = false;
@@ -68,7 +71,7 @@ namespace ShareAsQRExtension
                             var url = urlObj.ToString();
                             Console.WriteLine(url);
 
-							_qrCodeItem = new QRCodeItem(_fileHelper, url);
+                            _qrCodeItem = new QRCodeItem(_fileHelper, url);
                             _qrCodeByteBuffer = NSData.FromArray(_qrCodeItem.GenerateQRCodeByteArray());
 
                             var image = UIImage.LoadFromData(_qrCodeByteBuffer);
@@ -105,7 +108,7 @@ namespace ShareAsQRExtension
         partial void SaveClicked(UIBarButtonItem sender)
         {
             var path = _qrCodeItem.Path;
-            
+
             if (_qrCodeByteBuffer.Save(path, false, out NSError error))
             {
                 Console.WriteLine("Saved at " + path + ".");
@@ -115,18 +118,13 @@ namespace ShareAsQRExtension
                     saveButton.Title = "Saved";
                 });
 
-				using (var db = ShareQRDbContext.Create(_fileHelper.GetSharedFilePath("ShareQR.db")))
-                {
-                    db.QRCodeItems.Add(_qrCodeItem);
-                    db.SaveChanges();
-                }
+                _qrCodeItemStore.AddItemAsync(_qrCodeItem);
+				Console.WriteLine("Inserted into db.")
             }
             else
             {
                 Console.WriteLine("Cannot save because " + error.LocalizedDescription + ".");
             }
         }
-
-
     }
 }

@@ -1,11 +1,12 @@
 ﻿using System;
-using System.IO;
-using Foundation;
-using ShareQR.ShareAsQRExtension;
+using ShareAsQRExtension;
+using ShareQR;
 using Xamarin.Forms;
+using Foundation;
+using System.IO;
 
 [assembly: Dependency(typeof(FileHelper))]
-namespace ShareQR.ShareAsQRExtension
+namespace ShareAsQRExtension
 {
 	public class FileHelper : IFileHelper
     {

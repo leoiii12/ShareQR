@@ -3,12 +3,13 @@ using ShareQR.Models;
 
 namespace ShareQR.ViewModels
 {
-    public class ItemDetailViewModel : BaseViewModel
+    public class ItemDetailViewModel : BaseItemViewModel
     {
-        public Item Item { get; set; }
-        public ItemDetailViewModel(Item item = null)
+		public QRCodeItem Item { get; set; }
+
+		public ItemDetailViewModel(QRCodeItem item = null) : base()
         {
-            Title = item?.Text;
+			Title = item?.Data;
             Item = item;
         }
     }

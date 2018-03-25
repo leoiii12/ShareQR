@@ -9,22 +9,28 @@ using Xamarin.Forms;
 
 namespace ShareQR.ViewModels
 {
-    public class ItemsViewModel : BaseViewModel
+    public class ItemsViewModel : BaseItemViewModel
     {
-        public ObservableCollection<Item> Items { get; set; }
-        public Command LoadItemsCommand { get; set; }
+        public ObservableCollection<QRCodeItem> QRCodeItems { get; set; }
+        public Command LoadQRCodeItemsCommand { get; set; }
 
-        public ItemsViewModel()
+		public ItemsViewModel() : base()
         {
             Title = "Browse";
-            Items = new ObservableCollection<Item>();
-            LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
+            QRCodeItems = new ObservableCollection<QRCodeItem>();
+            LoadQRCodeItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
 
-            MessagingCenter.Subscribe<NewItemPage, Item>(this, "AddItem", async (obj, item) =>
+            MessagingCenter.Subscribe<NewItemPage, QRCodeItem>(this, "AddItem", async (obj, item) =>
             {
-                var _item = item as Item;
-                Items.Add(_item);
-                await DataStore.AddItemAsync(_item);
+                var qrCodeItem = item as QRCodeItem;
+
+                if (qrCodeItem == null)
+                {
+                    throw new Exception("Not a QRCodeItem.");
+                }
+
+                QRCodeItems.Add(qrCodeItem);
+                await DataStore.AddItemAsync(qrCodeItem);
             });
         }
 
@@ -37,11 +43,13 @@ namespace ShareQR.ViewModels
 
             try
             {
-                Items.Clear();
+                QRCodeItems.Clear();
+
                 var items = await DataStore.GetItemsAsync(true);
                 foreach (var item in items)
                 {
-                    Items.Add(item);
+                    QRCodeItems.Add(item);
+					Console.WriteLine(item);
                 }
             }
             catch (Exception ex)

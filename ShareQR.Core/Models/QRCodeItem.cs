@@ -10,17 +10,21 @@ namespace ShareQR.Models
 {
     public class QRCodeItem
     {
-		public QRCodeItem(String data) : this(DependencyService.Get<IFileHelper>(), data)
+        public QRCodeItem(String data) : this(DependencyService.Get<IFileHelper>(), data)
         {
         }
 
-		public QRCodeItem(IFileHelper fileHelper, String data)
+        public QRCodeItem(IFileHelper fileHelper, String data)
         {
-			var sharedDirectoryPath = fileHelper.SharedDirectoryPath;
-            
+            var sharedDirectoryPath = fileHelper.SharedDirectoryPath;
+
             Data = data ?? throw new Exception(nameof(data) + " cannot be null.");
-            CreateDate = DateTime.UtcNow;        
+            CreateDate = DateTime.UtcNow;
             Path = System.IO.Path.Combine(sharedDirectoryPath, HashedFileName);
+        }
+
+        protected QRCodeItem()
+        {         
         }
 
         [Key]
