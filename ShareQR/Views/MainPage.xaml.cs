@@ -8,7 +8,7 @@ namespace ShareQR.Views
 	{
 		public MainPage ()
 		{
-			InitializeComponent ();
+			InitializeComponent();
 		}
 	}
 }

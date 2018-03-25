@@ -17,10 +17,9 @@ namespace ShareQR
 
         protected virtual void RegisterDependencies(ContainerBuilder cb)
         {
-            var db = new ShareQRDbContext(DependencyService.Get<IFileHelper>().GetSharedFilePath("ShareQR.db"));
-
-            cb.RegisterInstance(db).As<ShareQRDbContext>();
-            cb.RegisterType<QRCodeItemStore>().As<IQRCodeItemStore>();
+			// Be careful of Captive Dependency
+			cb.Register(cc => ShareQRDbContext.Create(cc.Resolve<IFileHelper>().GetSharedFilePath("ShareQR.db"))).As<ShareQRDbContext>().SingleInstance();
+			cb.RegisterType<QRCodeItemStore>().As<IQRCodeItemStore>().SingleInstance();
         }
     }
 }

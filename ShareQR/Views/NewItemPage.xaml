@@ -4,12 +4,12 @@
              x:Class="ShareQR.Views.NewItemPage"
 		     Title="New Item">
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Save" Clicked="SaveClicked" />
+        <ToolbarItem Text="Save" Clicked="OnSaveButtonClicked" />
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <StackLayout Spacing="20" Padding="15">
-            <Label Text="Text" FontSize="Medium" />
-            <Entry Text="{Binding TempData}" TextChanged="OnTextChanged" FontSize="Small" />
+            <Label Text="Text" FontSize="Medium" Margin="0, 0, 0, 5"/>
+            <Entry Text="{Binding TempData}" TextChangmpDataTeed="OnTextChanged" FontSize="Small"/>
             <Image Source="{Binding TempMemoryStream}" />
         </StackLayout>
     </ContentPage.Content>

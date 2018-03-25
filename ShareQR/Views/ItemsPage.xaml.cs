@@ -18,6 +18,14 @@ namespace ShareQR.Views
             BindingContext = viewModel = new ItemsPageViewModel();
         }
 
+		protected override void OnAppearing()
+        {
+            base.OnAppearing();
+
+            if (viewModel.QRCodeItems.Count == 0)
+                viewModel.LoadQRCodeItemsCommand.Execute(null);
+        }
+
         async void OnItemSelected(object sender, SelectedItemChangedEventArgs args)
         {
             var item = args.SelectedItem as QRCodeItem;
@@ -29,7 +37,7 @@ namespace ShareQR.Views
             ItemsListView.SelectedItem = null;
         }
 
-        public void OnDeleteClicked(object sender, EventArgs e)
+        public void OnItemDeleteClicked(object sender, EventArgs e)
         {
 			var menuItem = sender as MenuItem;
 			if (menuItem == null) return;
@@ -37,17 +45,9 @@ namespace ShareQR.Views
 			MessagingCenter.Send<ItemsPage, QRCodeItem>(this, "RemoveItem", (QRCodeItem) menuItem.CommandParameter);
         }
 
-        async void AddItemClicked(object sender, EventArgs e)
+		async void AddButtonClicked(object sender, EventArgs e)
         {
             await Navigation.PushModalAsync(new NavigationPage(new NewItemPage()));
-        }
-
-        protected override void OnAppearing()
-        {
-            base.OnAppearing();
-
-            if (viewModel.QRCodeItems.Count == 0)
-                viewModel.LoadQRCodeItemsCommand.Execute(null);
         }
     }
 }

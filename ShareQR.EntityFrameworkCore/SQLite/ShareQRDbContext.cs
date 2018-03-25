@@ -4,8 +4,6 @@ using ShareQR.Models;
 using ShareQR.SQLite;
 using Xamarin.Forms;
 
-[assembly: Dependency(typeof(ShareQRDbContext))]
-
 namespace ShareQR.SQLite
 {
     public class ShareQRDbContext : DbContext
@@ -23,7 +21,7 @@ namespace ShareQR.SQLite
 
         protected string DatabasePath { get; set; }
 
-        public ShareQRDbContext(string databasePath)
+		protected ShareQRDbContext(string databasePath)
         {
             if (!databasePath.EndsWith(".db", StringComparison.Ordinal))
             {
@@ -35,7 +33,7 @@ namespace ShareQR.SQLite
             DatabasePath = databasePath;
         }
 
-        public ShareQRDbContext() : this("ShareQR.db")
+		protected ShareQRDbContext() : this("ShareQR.db")
         {
         }
 

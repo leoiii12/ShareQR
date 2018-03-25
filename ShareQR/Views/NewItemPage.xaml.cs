@@ -54,7 +54,7 @@ namespace ShareQR.Views
                 TempMemoryStream.Dispose();
         }
 
-		async void SaveClicked(object sender, EventArgs e)
+		async void OnSaveButtonClicked(object sender, EventArgs e)
         {
 			var hasNoInput = QRCodeItem.Data == "";
 			if (hasNoInput)
@@ -72,7 +72,7 @@ namespace ShareQR.Views
             }
         }
 
-        void OnTextChanged(object sender, TextChangedEventArgs e)
+        void OnTempDataTextChanged(object sender, TextChangedEventArgs e)
         {
             var newText = e.NewTextValue;
 

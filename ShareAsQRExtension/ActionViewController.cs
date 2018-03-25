@@ -19,7 +19,7 @@ namespace ShareAsQRExtension
             // Note: this .ctor should not contain any initialization logic. 
 
             _fileHelper = new FileHelper();
-            _db = new ShareQRDbContext(_fileHelper.GetSharedFilePath("ShareQR.db"));
+			_db = ShareQRDbContext.Create(_fileHelper.GetSharedFilePath("ShareQR.db"));
             _qrCodeItemStore = new QRCodeItemStore(_db);
         }
 
