@@ -5,7 +5,7 @@
              xmlns:vm="clr-namespace:ShareQR.ViewModels;"
              Title="{Binding Title}">
     <ContentPage.BindingContext>
-        <vm:AboutViewModel />
+        <vm:AboutPageViewModel />
     </ContentPage.BindingContext>
     <Grid>
         <Grid.RowDefinitions>

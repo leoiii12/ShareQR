@@ -1,19 +1,15 @@
-﻿using System;
-
+﻿using ShareQR.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-
-using ShareQR.Models;
-using ShareQR.ViewModels;
 
 namespace ShareQR.Views
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class ItemDetailPage : ContentPage
 	{
-        ItemDetailViewModel viewModel;
+        ItemDetailPageViewModel viewModel;
 
-        public ItemDetailPage(ItemDetailViewModel viewModel)
+        public ItemDetailPage(ItemDetailPageViewModel viewModel)
         {
             InitializeComponent();
 

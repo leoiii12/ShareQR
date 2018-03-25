@@ -1,5 +1,5 @@
-﻿using System;
-using Autofac;
+﻿using Autofac;
+using ShareQR.Helpers;
 
 namespace ShareQR.iOS
 {

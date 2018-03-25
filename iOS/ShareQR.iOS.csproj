@@ -114,7 +114,7 @@
     <Compile Include="AppDelegate.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="FileHelper.cs" />
-    <Compile Include="Setup.cs" />
+    <Compile Include="App\Setup.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Entitlements.plist" />
@@ -138,6 +138,9 @@
       <Project>{A2921B69-68FA-4C0C-B956-9361D6D433EC}</Project>
       <Name>ShareQR.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>

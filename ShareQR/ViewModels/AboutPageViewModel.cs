@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Windows.Input;
-
 using Xamarin.Forms;
 
 namespace ShareQR.ViewModels
 {
-    public class AboutViewModel : BaseItemViewModel
+    public class AboutPageViewModel : QRCodeItemBaseViewModel
     {
-        public AboutViewModel()
+        public AboutPageViewModel()
         {
             Title = "About";
 

@@ -1,14 +1,15 @@
 ﻿using System;
-
-using MobileCoreServices;
+using System.Linq;
 using Foundation;
-using UIKit;
+using MobileCoreServices;
+using ShareQR.Helpers;
 using ShareQR.Models;
-using ShareQR;
-using ShareQR.SQLite;
 using ShareQR.Services;
+using ShareQR.SQLite;
+using UIKit;
 
-[assembly: Preserve(typeof(System.Linq.Queryable), AllMembers = true)]
+[assembly: Preserve(typeof(Queryable), AllMembers = true)]
+
 namespace ShareAsQRExtension
 {
     public partial class ActionViewController : UIViewController
@@ -27,7 +28,7 @@ namespace ShareAsQRExtension
         private readonly IQRCodeItemStore _qrCodeItemStore;
 
         private QRCodeItem _qrCodeItem;
-        private NSData _qrCodeByteBuffer;
+        private byte[] _qrCodeByteArray;
 
         public override void DidReceiveMemoryWarning()
         {
@@ -66,19 +67,19 @@ namespace ShareAsQRExtension
                 {
                     if (itemProvider.HasItemConformingTo(UTType.URL))
                     {
-                        itemProvider.LoadItem(UTType.URL, null, delegate (NSObject urlObj, NSError error)
+                        itemProvider.LoadItem(UTType.URL, null, (urlObj, error) =>
                         {
                             var url = urlObj.ToString();
                             Console.WriteLine(url);
 
                             _qrCodeItem = new QRCodeItem(_fileHelper, url);
-                            _qrCodeByteBuffer = NSData.FromArray(_qrCodeItem.GenerateQRCodeByteArray());
+                            _qrCodeByteArray = _qrCodeItem.GenerateQRCodeByteArray();
 
-                            var image = UIImage.LoadFromData(_qrCodeByteBuffer);
-                            NSOperationQueue.MainQueue.AddOperation(delegate
+                            using (var qrCodeByteBuffer = NSData.FromArray(_qrCodeByteArray))
                             {
-                                imageView.Image = image;
-                            });
+                                var image = UIImage.LoadFromData(qrCodeByteBuffer);
+                                NSOperationQueue.MainQueue.AddOperation(() => imageView.Image = image);
+                            }
                         });
 
                         imageFound = true;
@@ -88,10 +89,7 @@ namespace ShareAsQRExtension
 
                 if (imageFound)
                 {
-                    NSOperationQueue.MainQueue.AddOperation(delegate
-                    {
-                        saveButton.Enabled = true;
-                    });
+                    NSOperationQueue.MainQueue.AddOperation(() => saveButton.Enabled = true);
 
                     break;
                 }
@@ -109,22 +107,18 @@ namespace ShareAsQRExtension
         {
             var path = _qrCodeItem.Path;
 
-            if (_qrCodeByteBuffer.Save(path, false, out NSError error))
-            {
-                Console.WriteLine("Saved at " + path + ".");
-                NSOperationQueue.MainQueue.AddOperation(delegate
-                {
-                    saveButton.Enabled = false;
-                    saveButton.Title = "Saved";
-                });
+            if (!_fileHelper.Save(_qrCodeByteArray, path))
+                throw new Exception("Cannot save the QR code.");
 
-                _qrCodeItemStore.AddItemAsync(_qrCodeItem);
-				Console.WriteLine("Inserted into db.");
-            }
-            else
+            Console.WriteLine("Saved the QR code to " + path + ".");
+            NSOperationQueue.MainQueue.AddOperation(() =>
             {
-                Console.WriteLine("Cannot save because " + error.LocalizedDescription + ".");
-            }
+                saveButton.Enabled = false;
+                saveButton.Title = "Saved";
+            });
+
+            _qrCodeItemStore.AddItemAsync(_qrCodeItem);
+            Console.WriteLine("Inserted into the database.");
         }
     }
 }

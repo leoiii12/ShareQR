@@ -7,8 +7,8 @@ namespace ShareQR.Services
     public interface IQRCodeItemStore
     {
         Task<bool> AddItemAsync(QRCodeItem item);
-        Task<bool> DeleteItemAsync(string id);
-        Task<QRCodeItem> GetItemAsync(string path);
+        Task<bool> DeleteItemAsync(QRCodeItem item);
+        Task<QRCodeItem> GetItemAsync(string data);
         Task<IEnumerable<QRCodeItem>> GetItemsAsync(bool forceRefresh = false);
         Task<bool> UpdateItemAsync(QRCodeItem item);
     }

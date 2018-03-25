@@ -3,18 +3,15 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Autofac;
-using ShareQR.Models;
 using ShareQR.Services;
-
-using Xamarin.Forms;
 
 namespace ShareQR.ViewModels
 {
-    public class BaseItemViewModel : INotifyPropertyChanged
+    public class QRCodeItemBaseViewModel : INotifyPropertyChanged
     {
         public IQRCodeItemStore DataStore;
 
-        public BaseItemViewModel()
+        public QRCodeItemBaseViewModel()
         {
             using (var scope = AppContainer.Container.BeginLifetimeScope())
             {
@@ -23,6 +20,7 @@ namespace ShareQR.ViewModels
         }
 
         bool isBusy = false;
+
         public bool IsBusy
         {
             get { return isBusy; }
@@ -30,13 +28,14 @@ namespace ShareQR.ViewModels
         }
 
         string title = string.Empty;
+
         public string Title
         {
             get { return title; }
             set { SetProperty(ref title, value); }
         }
 
-        protected bool SetProperty<T>(ref T backingStore, T value, [CallerMemberName]string propertyName = "", Action onChanged = null)
+        protected bool SetProperty<T>(ref T backingStore, T value, [CallerMemberName] string propertyName = "", Action onChanged = null)
         {
             if (EqualityComparer<T>.Default.Equals(backingStore, value))
                 return false;
@@ -48,7 +47,9 @@ namespace ShareQR.ViewModels
         }
 
         #region INotifyPropertyChanged
+
         public event PropertyChangedEventHandler PropertyChanged;
+
         protected void OnPropertyChanged([CallerMemberName] string propertyName = "")
         {
             var changed = PropertyChanged;
@@ -57,6 +58,7 @@ namespace ShareQR.ViewModels
 
             changed.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
         #endregion
     }
 }

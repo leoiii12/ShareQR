@@ -5,6 +5,7 @@ using ShareQR.SQLite;
 using Xamarin.Forms;
 
 [assembly: Dependency(typeof(ShareQRDbContext))]
+
 namespace ShareQR.SQLite
 {
     public class ShareQRDbContext : DbContext
@@ -12,7 +13,7 @@ namespace ShareQR.SQLite
         public DbSet<QRCodeItem> QRCodeItems { get; set; }
 
         public static ShareQRDbContext Create(string databasePath)
-        {         
+        {
             var dbContext = new ShareQRDbContext(databasePath);
             dbContext.Database.EnsureCreated();
             dbContext.Database.Migrate();
@@ -24,12 +25,17 @@ namespace ShareQR.SQLite
 
         public ShareQRDbContext(string databasePath)
         {
-			Console.WriteLine("Database created at " + databasePath);
+            if (!databasePath.EndsWith(".db", StringComparison.Ordinal))
+            {
+                throw new Exception($"Give a path ending with \".db\".");
+            }
+
+            Console.WriteLine("Database created at " + databasePath);
 
             DatabasePath = databasePath;
         }
 
-		public ShareQRDbContext() : this("ShareQR.db")
+        public ShareQRDbContext() : this("ShareQR.db")
         {
         }
 

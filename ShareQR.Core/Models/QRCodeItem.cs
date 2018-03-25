@@ -1,52 +1,67 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.IO;
 using System.Security.Cryptography;
+using System.Text;
+using Autofac;
 using QRCoder;
-using Xamarin.Forms;
+using ShareQR.Helpers;
 
 namespace ShareQR.Models
 {
     public class QRCodeItem
     {
-        public QRCodeItem(String data) : this(DependencyService.Get<IFileHelper>(), data)
+        protected QRCodeItem()
         {
+        }
+
+        public QRCodeItem(String data)
+        {
+            using (var scope = AppContainer.Container.BeginLifetimeScope())
+            {
+                var fileHelper = AppContainer.Container.Resolve<IFileHelper>();
+
+                Initialize(fileHelper, data);
+            }
         }
 
         public QRCodeItem(IFileHelper fileHelper, String data)
         {
+            Initialize(fileHelper, data);
+        }
+
+        private void Initialize(IFileHelper fileHelper, string data)
+        {
             var sharedDirectoryPath = fileHelper.SharedDirectoryPath;
 
             Data = data ?? throw new Exception(nameof(data) + " cannot be null.");
-            CreateDate = DateTime.UtcNow;
             Path = System.IO.Path.Combine(sharedDirectoryPath, HashedFileName);
-        }
-
-        protected QRCodeItem()
-        {         
+            CreateDate = DateTime.UtcNow;
         }
 
         [Key]
-        public string Data { get; protected set; }
+		public string Data { get; protected set; }
+
         public string Path { get; protected set; }
+
         public DateTime CreateDate { get; protected set; }
 
         [NotMapped]
         public string HashedFileName
         {
-            get
-            {
-                return System.IO.Path.ChangeExtension(ComputeHashString(), ".jpg");
-            }
+            get { return System.IO.Path.ChangeExtension(ComputeHashString(), ".jpg"); }
         }
 
         public byte[] GenerateQRCodeByteArray()
         {
-            QRCodeGenerator qrCodeGenerator = new QRCodeGenerator();
-            QRCodeData qrCodeData = qrCodeGenerator.CreateQrCode(Data, QRCodeGenerator.ECCLevel.Q);
-            BitmapByteQRCode qrCode = new BitmapByteQRCode(qrCodeData);
-            byte[] qrCodeAsBitmapByteArr = qrCode.GetGraphic(20);
+            byte[] qrCodeAsBitmapByteArr;
+
+            using (QRCodeGenerator qrCodeGenerator = new QRCodeGenerator())
+            using (QRCodeData qrCodeData = qrCodeGenerator.CreateQrCode(Data, QRCodeGenerator.ECCLevel.Q))
+            using (BitmapByteQRCode qrCode = new BitmapByteQRCode(qrCodeData))
+            {
+                qrCodeAsBitmapByteArr = qrCode.GetGraphic(20);
+            }
 
             return qrCodeAsBitmapByteArr;
         }
@@ -57,7 +72,7 @@ namespace ShareQR.Models
 
             using (var algorithm = SHA256.Create())
             {
-                computedHash = algorithm.ComputeHash(System.Text.Encoding.ASCII.GetBytes(Data));
+                computedHash = algorithm.ComputeHash(Encoding.ASCII.GetBytes(Data));
             }
 
             return BitConverter.ToString(computedHash);

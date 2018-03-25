@@ -40,4 +40,7 @@
     <ProjectReference Include="..\ShareQR.Core\ShareQR.Core.csproj" />
     <ProjectReference Include="..\ShareQR.EntityFrameworkCore\ShareQR.EntityFrameworkCore.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App\" />
+  </ItemGroup>
 </Project>

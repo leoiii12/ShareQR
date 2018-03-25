@@ -1,14 +1,14 @@
 ﻿using System;
-using ShareAsQRExtension;
-using ShareQR;
-using Xamarin.Forms;
-using Foundation;
 using System.IO;
+using Foundation;
+using ShareAsQRExtension;
+using ShareQR.Helpers;
+using Xamarin.Forms;
 
 [assembly: Dependency(typeof(FileHelper))]
 namespace ShareAsQRExtension
 {
-	public class FileHelper : IFileHelper
+    public class FileHelper : IFileHelper
     {
         public string SharedDirectoryPath { get; private set; }
 
@@ -23,12 +23,18 @@ namespace ShareAsQRExtension
 
         public string GetSharedFilePath(string fileName)
         {
-            if (!fileName.EndsWith(".db", StringComparison.Ordinal))
+            return Path.Combine(SharedDirectoryPath, fileName);
+        }
+
+        public bool Save(byte[] byteArr, string path)
+        {            
+			var hasSaved = NSData.FromArray(byteArr).Save(path, false, out NSError error);
+            if (!hasSaved)
             {
-                throw new Exception($"Please give a {fileName} ending with db.");
+                Console.WriteLine("Cannot save because " + error.LocalizedDescription + ".");
             }
 
-            return Path.Combine(SharedDirectoryPath, fileName);
+            return hasSaved;
         }
     }
 }

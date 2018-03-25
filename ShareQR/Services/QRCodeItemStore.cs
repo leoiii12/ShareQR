@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Linq;
-using ShareQR.SQLite;
-using ShareQR.Models;
-using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 using Autofac;
+using Microsoft.EntityFrameworkCore;
+using ShareQR.Models;
+using ShareQR.SQLite;
+using SQLitePCL;
 
 namespace ShareQR.Services
 {
@@ -18,11 +19,9 @@ namespace ShareQR.Services
         /// </summary>
         public QRCodeItemStore()
         {
-            Console.WriteLine("QRCodeItemStore");
             using (var scope = AppContainer.Container.BeginLifetimeScope())
             {
                 _db = AppContainer.Container.Resolve<ShareQRDbContext>();
-                Console.WriteLine(_db);
             }
         }
 
@@ -31,7 +30,7 @@ namespace ShareQR.Services
         /// </summary>
         public QRCodeItemStore(ShareQRDbContext db)
         {
-            SQLitePCL.Batteries_V2.Init();
+            Batteries_V2.Init();
 
             _db = db ?? throw new ArgumentNullException(nameof(db));
         }
@@ -39,9 +38,7 @@ namespace ShareQR.Services
         public async Task<bool> AddItemAsync(QRCodeItem item)
         {
             if (await _db.QRCodeItems.AnyAsync(i => i.Data == item.Data))
-            {
                 return true;
-            }
 
             await _db.QRCodeItems.AddAsync(item);
 
@@ -49,9 +46,10 @@ namespace ShareQR.Services
             return true;
         }
 
-        public async Task<bool> DeleteItemAsync(string id)
+        public async Task<bool> DeleteItemAsync(QRCodeItem item)
         {
-            var item = await _db.FindAsync<QRCodeItem>(id);
+            if ((await _db.QRCodeItems.AnyAsync(i => i.Data == item.Data)) == false)
+                throw new Exception("The item does not exist.");
 
             _db.QRCodeItems.Remove(item);
 
@@ -59,14 +57,14 @@ namespace ShareQR.Services
             return true;
         }
 
-        public async Task<QRCodeItem> GetItemAsync(string path)
+        public async Task<QRCodeItem> GetItemAsync(string data)
         {
-            return await _db.QRCodeItems.FirstAsync(qrci => qrci.Path == path);
+            return await _db.QRCodeItems.FirstAsync(qrci => qrci.Data == data);
         }
 
         public async Task<IEnumerable<QRCodeItem>> GetItemsAsync(bool forceRefresh = false)
         {
-			return await _db.QRCodeItems.OrderByDescending(qrci => qrci.CreateDate).ToListAsync();
+            return await _db.QRCodeItems.OrderByDescending(qrci => qrci.CreateDate).ToListAsync();
         }
 
         public Task<bool> UpdateItemAsync(QRCodeItem item)

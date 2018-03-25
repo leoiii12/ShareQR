@@ -1,22 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
 using ShareQR.Models;
 using ShareQR.Views;
-
 using Xamarin.Forms;
 
 namespace ShareQR.ViewModels
 {
-    public class ItemsViewModel : BaseItemViewModel
-    {      
+    public class ItemsPageViewModel : QRCodeItemBaseViewModel
+    {
         public ObservableCollection<QRCodeItem> QRCodeItems { get; set; }
         public Command LoadQRCodeItemsCommand { get; set; }
-        
-        public ItemsViewModel()
+
+        public ItemsPageViewModel()
         {
             Title = "Browse";
             QRCodeItems = new ObservableCollection<QRCodeItem>();
@@ -27,13 +24,9 @@ namespace ShareQR.ViewModels
                 var qrCodeItem = item as QRCodeItem;
 
                 if (qrCodeItem == null)
-                {
-                    throw new Exception("Not a QRCodeItem.");
-                }
+                    throw new Exception($"Not a {nameof(QRCodeItem)}.");
 
-                QRCodeItems.Add(qrCodeItem);
-                //QRCodeItems = new ObservableCollection<QRCodeItem>(QRCodeItems.OrderBy(x => x.CreateDate).ToList());
-
+                QRCodeItems.Insert(0, qrCodeItem);
                 await DataStore.AddItemAsync(qrCodeItem);
             });
 
@@ -42,14 +35,10 @@ namespace ShareQR.ViewModels
                 var qrCodeItem = item as QRCodeItem;
 
                 if (qrCodeItem == null)
-                {
-                    throw new Exception("Not a QRCodeItem.");
-                }
+                    throw new Exception($"Not a {nameof(QRCodeItem)}.");
 
                 QRCodeItems.Remove(qrCodeItem);
-                //QRCodeItems = new ObservableCollection<QRCodeItem>(QRCodeItems.OrderBy(x => x.CreateDate).ToList());
-                
-                await DataStore.DeleteItemAsync(item.Data);
+                await DataStore.DeleteItemAsync(qrCodeItem);
             });
         }
 
