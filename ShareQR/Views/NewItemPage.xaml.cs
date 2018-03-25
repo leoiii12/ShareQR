@@ -30,7 +30,7 @@ namespace ShareQR.Views
             BindingContext = this;
         }
 
-        async void Save_Clicked(object sender, EventArgs e)
+        async void SaveClicked(object sender, EventArgs e)
         {
             MessagingCenter.Send(this, "AddItem", new QRCodeItem(TempItem.Data));
             await Navigation.PopModalAsync();

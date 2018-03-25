@@ -36,7 +36,15 @@ namespace ShareQR.Views
             ItemsListView.SelectedItem = null;
         }
 
-        async void AddItem_Clicked(object sender, EventArgs e)
+        public void OnDeleteClicked(object sender, EventArgs e)
+        {
+			var menuItem = sender as MenuItem;
+			if (menuItem == null) return;
+
+			MessagingCenter.Send<ItemsPage, QRCodeItem>(this, "RemoveItem", (QRCodeItem) menuItem.CommandParameter);
+        }
+
+        async void AddItemClicked(object sender, EventArgs e)
         {
             await Navigation.PushModalAsync(new NavigationPage(new NewItemPage()));
         }

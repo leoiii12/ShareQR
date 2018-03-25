@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Linq;
 using ShareQR.SQLite;
 using ShareQR.Models;
 using Microsoft.EntityFrameworkCore;
@@ -17,7 +18,7 @@ namespace ShareQR.Services
         /// </summary>
         public QRCodeItemStore()
         {
-			Console.WriteLine("QRCodeItemStore");
+            Console.WriteLine("QRCodeItemStore");
             using (var scope = AppContainer.Container.BeginLifetimeScope())
             {
                 _db = AppContainer.Container.Resolve<ShareQRDbContext>();
@@ -37,10 +38,14 @@ namespace ShareQR.Services
 
         public async Task<bool> AddItemAsync(QRCodeItem item)
         {
-            await _db.QRCodeItems.AddAsync(item);
-            var a = await _db.SaveChangesAsync();
+            if (await _db.QRCodeItems.AnyAsync(i => i.Data == item.Data))
+            {
+                return true;
+            }
 
-            Console.WriteLine(a);
+            await _db.QRCodeItems.AddAsync(item);
+
+            await _db.SaveChangesAsync();
             return true;
         }
 
@@ -50,9 +55,7 @@ namespace ShareQR.Services
 
             _db.QRCodeItems.Remove(item);
 
-            var a = _db.SaveChangesAsync();
-            Console.WriteLine(a);
-
+            await _db.SaveChangesAsync();
             return true;
         }
 
@@ -63,7 +66,7 @@ namespace ShareQR.Services
 
         public async Task<IEnumerable<QRCodeItem>> GetItemsAsync(bool forceRefresh = false)
         {
-            return await _db.QRCodeItems.ToListAsync();
+			return await _db.QRCodeItems.OrderByDescending(qrci => qrci.CreateDate).ToListAsync();
         }
 
         public Task<bool> UpdateItemAsync(QRCodeItem item)

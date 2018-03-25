@@ -119,7 +119,7 @@ namespace ShareAsQRExtension
                 });
 
                 _qrCodeItemStore.AddItemAsync(_qrCodeItem);
-				Console.WriteLine("Inserted into db.")
+				Console.WriteLine("Inserted into db.");
             }
             else
             {

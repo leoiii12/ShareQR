@@ -8,5 +8,6 @@
         <Label Text="{Binding Item.Data}" FontSize="Small"/>
         <Label Text="Create Date:" FontSize="Medium" />
         <Label Text="{Binding Item.CreateDate}" FontSize="Small"/>
+        <Image Source="{Binding Item.Path}"></Image>
     </StackLayout>
 </ContentPage>
