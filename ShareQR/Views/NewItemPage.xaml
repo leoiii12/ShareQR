@@ -9,7 +9,7 @@
     <ContentPage.Content>
         <StackLayout Spacing="20" Padding="15">
             <Label Text="Text" FontSize="Medium" Margin="0, 0, 0, 5"/>
-            <Entry Text="{Binding TempData}" TextChangmpDataTeed="OnTextChanged" FontSize="Small"/>
+            <Entry Text="{Binding TempData}" TextChanged="OnTempDataTextChanged" FontSize="Small"/>
             <Image Source="{Binding TempMemoryStream}" />
         </StackLayout>
     </ContentPage.Content>

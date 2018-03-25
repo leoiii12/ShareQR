@@ -44,24 +44,24 @@ namespace ShareQR.ViewModels
 
         async Task ExecuteLoadItemsCommand()
         {
-            if (IsBusy)
-                return;
+            if (IsBusy) return;
 
             IsBusy = true;
 
             try
             {
                 QRCodeItems.Clear();
+				IsBusy = false;
 
                 var items = await DataStore.GetItemsAsync(true);
                 foreach (var item in items)
                 {
                     QRCodeItems.Add(item);
-                    Console.WriteLine(item);
                 }
             }
             catch (Exception ex)
             {
+				IsBusy = true;
                 Debug.WriteLine(ex);
             }
             finally

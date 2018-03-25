@@ -98,6 +98,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
+    <Folder Include="Helpers\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -111,7 +112,7 @@
     <Compile Include="ActionViewController.designer.cs">
       <DependentUpon>ActionViewController.cs</DependentUpon>
     </Compile>
-    <Compile Include="FileHelper.cs" />
+    <Compile Include="Helpers\FileHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ShareQR\ShareQR.csproj">

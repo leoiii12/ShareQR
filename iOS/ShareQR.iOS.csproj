@@ -113,8 +113,8 @@
   <ItemGroup>
     <Compile Include="AppDelegate.cs" />
     <Compile Include="Main.cs" />
-    <Compile Include="FileHelper.cs" />
     <Compile Include="App\Setup.cs" />
+    <Compile Include="Helpers\FileHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Entitlements.plist" />
@@ -141,6 +141,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App\" />
+    <Folder Include="Helpers\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>
