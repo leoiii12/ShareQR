@@ -24,11 +24,13 @@
                                             <connections>
                                                 <action selector="DoneClicked:" destination="ObA-dk-sSI" id="1107"/>
                                             </connections>
+                                            <color key="tintColor" colorSpace="calibratedRGB" red="0" green="0.47843137254901963" blue="0.996078431372549" alpha="1"/>
                                         </barButtonItem>
                                         <barButtonItem key="rightBarButtonItem" title="Save" id="219">
                                             <connections>
                                                 <action selector="SaveClicked:" destination="ObA-dk-sSI" id="680"/>
                                             </connections>
+                                            <color key="tintColor" colorSpace="calibratedRGB" red="0" green="0.47843137254901963" blue="0.996078431372549" alpha="1"/>
                                         </barButtonItem>
                                     </navigationItem>
                                 </items>

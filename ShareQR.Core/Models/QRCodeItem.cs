@@ -32,9 +32,11 @@ namespace ShareQR.Models
 
         private void Initialize(IFileHelper fileHelper, string data)
         {
-            var sharedDirectoryPath = fileHelper.SharedDirectoryPath;
+			var sharedDirectoryPath = fileHelper.SharedDirectoryPath;
 
-			Data = data ?? throw new Exception(nameof(data) + " cannot be null.");
+            if (data == null) throw new Exception(nameof(data) + " cannot be null.");
+
+            Data = data.Length > 2083 ? data.Substring(0, 2083) : data;
             Path = data == "" ? "" : System.IO.Path.Combine(sharedDirectoryPath, HashedFileName);
             CreateDate = DateTime.UtcNow;
         }

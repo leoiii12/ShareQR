@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ShareQR.Views.ExtensionPage"
+             Title="{Binding Title}">
+    
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout Orientation="Vertical" Padding="16,40,16,40" Spacing="10">
+                <Label Text="In Safari, find ShareQR using the share icon." FontAttributes="Bold" FontSize="20" HorizontalTextAlignment="Center" />
+                <Label Text="(hint: scroll on the second row)" FontSize="18" HorizontalTextAlignment="Center" />
+
+                <Image Source="{Binding TutorialImage}" HorizontalOptions="Center" HeightRequest="384" Opacity="0.95">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding NextImageCommand}" NumberOfTapsRequired="1" />
+                    </Image.GestureRecognizers>
+                </Image>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+    
+</ContentPage>
