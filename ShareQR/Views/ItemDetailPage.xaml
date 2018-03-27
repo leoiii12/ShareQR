@@ -1,13 +1,35 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:ShareQR.Converters"
              x:Class="ShareQR.Views.ItemDetailPage"
              Title="{Binding Title}">
-    <StackLayout Spacing="20" Padding="15">
-        <Label Text="URL:" FontSize="Medium" />
-        <Label Text="{Binding Item.Data}" FontSize="Small"/>
-        <Label Text="Create Date:" FontSize="Medium" />
-        <Label Text="{Binding Item.CreateDate}" FontSize="Small"/>
-        <Image Source="{Binding Item.Path}" />
-    </StackLayout>
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:NegateBooleanConverter x:Key="negateBooleanConverter" />
+            <local:DateTimeToLocalStringConverter x:Key="dateTimeToLocalStringConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    
+    <ScrollView>
+        <StackLayout Spacing="20" Padding="15">
+            <!-- QR Code -->
+            <Image Source="{Binding Item.Path}" />
+
+            <!-- Data -->
+            <Label Text="Data" FontSize="Medium" />
+            <Label Text="{Binding Item.Data}" FontSize="Small" IsVisible="{Binding IsUrl, Converter={StaticResource negateBooleanConverter}}" />
+            <Label Text="{Binding Item.Data}" FontSize="Small" IsVisible="{Binding IsUrl}" TextColor="{StaticResource Primary}">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding OpenUrlCommand}" NumberOfTapsRequired="1" />
+                </Label.GestureRecognizers>
+            </Label>
+
+            <!-- Create Date -->
+            <Label Text="Create At" FontSize="Medium" />
+            <Label Text="{Binding Item.CreateDate, Converter={StaticResource dateTimeToLocalStringConverter}}" FontSize="Small" />
+        </StackLayout>
+    </ScrollView>
+    
 </ContentPage>

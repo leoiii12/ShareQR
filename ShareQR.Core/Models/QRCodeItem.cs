@@ -34,8 +34,8 @@ namespace ShareQR.Models
         {
             var sharedDirectoryPath = fileHelper.SharedDirectoryPath;
 
-            Data = data ?? throw new Exception(nameof(data) + " cannot be null.");
-            Path = System.IO.Path.Combine(sharedDirectoryPath, HashedFileName);
+			Data = data ?? throw new Exception(nameof(data) + " cannot be null.");
+            Path = data == "" ? "" : System.IO.Path.Combine(sharedDirectoryPath, HashedFileName);
             CreateDate = DateTime.UtcNow;
         }
 
@@ -46,21 +46,40 @@ namespace ShareQR.Models
 
         public DateTime CreateDate { get; protected set; }
 
+		[NotMapped]
+		private byte[] ByteArray { get; set; }
+
         [NotMapped]
         public string HashedFileName
         {
             get { return System.IO.Path.ChangeExtension(ComputeHashString(), ".jpg"); }
         }
 
+		private bool? _isURL;
+
+		[NotMapped]
+        public bool IsURL
+        {
+            get
+            {
+                if (_isURL == null)
+                    _isURL = Uri.TryCreate(Data, UriKind.Absolute, out Uri uriResult) && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
+
+                return _isURL.Value;
+            }
+        }
+
         public byte[] GenerateQRCodeByteArray()
         {
-            byte[] qrCodeAsBitmapByteArr;
+			if (ByteArray != null) return ByteArray;
+
+			byte[] qrCodeAsBitmapByteArr;
 
             using (QRCodeGenerator qrCodeGenerator = new QRCodeGenerator())
             using (QRCodeData qrCodeData = qrCodeGenerator.CreateQrCode(Data, QRCodeGenerator.ECCLevel.Q))
             using (BitmapByteQRCode qrCode = new BitmapByteQRCode(qrCodeData))
             {
-                qrCodeAsBitmapByteArr = qrCode.GetGraphic(20);
+				ByteArray = qrCodeAsBitmapByteArr = qrCode.GetGraphic(20);
             }
 
             return qrCodeAsBitmapByteArr;

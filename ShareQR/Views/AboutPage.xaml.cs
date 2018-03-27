@@ -1,4 +1,5 @@
-﻿using Xamarin.Forms;
+﻿using ShareQR.ViewModels;
+using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace ShareQR.Views
@@ -9,6 +10,8 @@ namespace ShareQR.Views
 		public AboutPage()
 		{
 			InitializeComponent();
+            
+			BindingContext = new AboutPageViewModel();
 		}
 	}
 }

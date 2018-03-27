@@ -1,16 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:local="clr-namespace:ShareQR.Converters"
              x:Class="ShareQR.Views.NewItemPage"
 		     Title="New Item">
+    
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:NegateBooleanConverter x:Key="negateBooleanConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Save" Clicked="OnSaveButtonClicked" />
+        <ToolbarItem Text="Save" Clicked="OnSaveButtonClicked" IsEnabled="{Binding IsBusy, Converter={StaticResource negateBooleanConverter}}" />
     </ContentPage.ToolbarItems>
+    
     <ContentPage.Content>
-        <StackLayout Spacing="20" Padding="15">
-            <Label Text="Text" FontSize="Medium" Margin="0, 0, 0, 5"/>
-            <Entry Text="{Binding TempData}" TextChanged="OnTempDataTextChanged" FontSize="Small"/>
-            <Image Source="{Binding TempMemoryStream}" />
-        </StackLayout>
+        <ScrollView>
+            <StackLayout Spacing="10" Padding="15">
+                <Label Text="Data" FontSize="Medium"/>
+                <Entry Text="{Binding InputText}" FontSize="Small"/>
+                <Label Text="Generating..." XAlign="Center" FontSize="Medium" IsVisible="{Binding IsBusy}" />
+                <Image Source="{Binding Item.Path}" IsVisible="{Binding IsBusy, Converter={StaticResource negateBooleanConverter}}" />
+            </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
+    
 </ContentPage>

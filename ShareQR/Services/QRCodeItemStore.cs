@@ -37,12 +37,11 @@ namespace ShareQR.Services
 
         public async Task<bool> AddItemAsync(QRCodeItem item)
         {
-            if (await _db.QRCodeItems.AnyAsync(i => i.Data == item.Data))
-                return true;
+			if (await _db.QRCodeItems.AnyAsync(qrci => qrci.Data == item.Data)) return true;
 
             await _db.QRCodeItems.AddAsync(item);
-
             await _db.SaveChangesAsync();
+
             return true;
         }
 
@@ -52,8 +51,8 @@ namespace ShareQR.Services
                 throw new Exception("The item does not exist.");
 
             _db.QRCodeItems.Remove(item);
-
             await _db.SaveChangesAsync();
+
             return true;
         }
 

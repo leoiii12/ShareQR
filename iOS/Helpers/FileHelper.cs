@@ -27,15 +27,41 @@ namespace ShareQR.iOS
             return Path.Combine(SharedDirectoryPath, fileName);
         }
 
-        public bool Save(byte[] byteArr, string path)
-        {
-            var hasSaved = NSData.FromArray(byteArr).Save(path, false, out NSError error);
-            if (!hasSaved)
+		public bool SaveByteArray(byte[] byteArr, string path)
+		{
+			var hasSaved = true;
+
+            try
             {
-                Console.WriteLine("Cannot save because " + error.LocalizedDescription + ".");
+                var bw = new BinaryWriter(File.Open(path, FileMode.OpenOrCreate));
+                bw.Write(byteArr);
+                bw.Flush();
+                bw.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.GetBaseException().Message);
+                hasSaved = false;
             }
 
             return hasSaved;
-        }
-    }
+		}
+
+		public bool RemoveFile(string path)
+		{
+			var hasRemoved = true;
+
+			try
+            {
+				File.Delete(path);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.GetBaseException().Message);
+                hasRemoved = false;
+            }
+
+			return hasRemoved;
+		}
+	}
 }

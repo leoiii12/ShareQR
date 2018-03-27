@@ -13,8 +13,7 @@ namespace ShareQR.SQLite
         public static ShareQRDbContext Create(string databasePath)
         {
             var dbContext = new ShareQRDbContext(databasePath);
-            dbContext.Database.EnsureCreated();
-            dbContext.Database.Migrate();
+			dbContext.Database.Migrate();
 
             return dbContext;
         }

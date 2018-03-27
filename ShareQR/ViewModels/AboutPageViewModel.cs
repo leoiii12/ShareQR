@@ -4,13 +4,13 @@ using Xamarin.Forms;
 
 namespace ShareQR.ViewModels
 {
-    public class AboutPageViewModel : QRCodeItemBaseViewModel
+    public class AboutPageViewModel : BaseViewModel
     {
         public AboutPageViewModel()
         {
             Title = "About";
 
-            OpenWebCommand = new Command(() => Device.OpenUri(new Uri("https://xamarin.com/platform")));
+            OpenWebCommand = new Command(() => Device.OpenUri(new Uri("https://leochoi.info")));
         }
 
         public ICommand OpenWebCommand { get; }

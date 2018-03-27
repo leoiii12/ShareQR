@@ -1,12 +1,21 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:ShareQR.Converters"
              x:Class="ShareQR.Views.ItemsPage"
              x:Name="BrowseItemsPage"
              Title="{Binding Title}">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:DateTimeToLocalStringConverter x:Key="dateTimeToLocalStringConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Add" Clicked="AddButtonClicked" />
     </ContentPage.ToolbarItems>
+    
     <ContentPage.Content>
         <StackLayout>
             <ListView x:Name="ItemsListView" 
@@ -22,11 +31,12 @@
                     <DataTemplate>
                         <ViewCell>
                             <ViewCell.ContextActions>
-                                <MenuItem Clicked="OnItemDeleteClicked" CommandParameter="{Binding .}" Text="Delete" IsDestructive="True" />
+                                <MenuItem Clicked="OnItemDeleteClicked" CommandParameter="{Binding .}" Text="Delete" IsDestructive="true" />
+                                <MenuItem Clicked="OnItemVisitClicked" CommandParameter="{Binding .}" Text="Visit" IsEnabled="{Binding IsURL}" />
                             </ViewCell.ContextActions>
                             <StackLayout Padding="10">
                                 <Label Text="{Binding Data}" LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" FontSize="16" />
-                                <Label Text="{Binding CreateDate}" LineBreakMode="NoWrap" Style="{DynamicResource ListItemDetailTextStyle}" FontSize="13" />
+                                <Label Text="{Binding CreateDate, Converter={StaticResource dateTimeToLocalStringConverter}}" LineBreakMode="NoWrap" Style="{DynamicResource ListItemDetailTextStyle}" FontSize="13" />
                             </StackLayout>
                         </ViewCell>
                     </DataTemplate>
@@ -34,4 +44,5 @@
             </ListView>
         </StackLayout>
     </ContentPage.Content>
+    
 </ContentPage>

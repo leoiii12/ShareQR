@@ -6,6 +6,8 @@
 
         string GetSharedFilePath(string fileName);
 
-        bool Save(byte[] byteArr, string path);
+        bool SaveByteArray(byte[] byteArr, string path);
+
+		bool RemoveFile(string path);
     }
 }

@@ -7,11 +7,11 @@ using ShareQR.Services;
 
 namespace ShareQR.ViewModels
 {
-    public class QRCodeItemBaseViewModel : INotifyPropertyChanged
+    public class BaseViewModel : INotifyPropertyChanged
     {
         public IQRCodeItemStore DataStore;
 
-        public QRCodeItemBaseViewModel()
+        public BaseViewModel()
         {
             using (var scope = AppContainer.Container.BeginLifetimeScope())
             {

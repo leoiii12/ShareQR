@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Foundation;
 using MobileCoreServices;
 using ShareQR.Helpers;
@@ -67,19 +68,22 @@ namespace ShareAsQRExtension
                 {
                     if (itemProvider.HasItemConformingTo(UTType.URL))
                     {
-                        itemProvider.LoadItem(UTType.URL, null, (urlObj, error) =>
+						Task.Factory.StartNew(() =>
                         {
-                            var url = urlObj.ToString();
-                            Console.WriteLine(url);
-
-                            _qrCodeItem = new QRCodeItem(_fileHelper, url);
-                            _qrCodeByteArray = _qrCodeItem.GenerateQRCodeByteArray();
-
-                            using (var qrCodeByteBuffer = NSData.FromArray(_qrCodeByteArray))
+                            itemProvider.LoadItem(UTType.URL, null, (urlObj, error) =>
                             {
-                                var image = UIImage.LoadFromData(qrCodeByteBuffer);
-                                NSOperationQueue.MainQueue.AddOperation(() => imageView.Image = image);
-                            }
+                                var url = urlObj.ToString();
+                                Console.WriteLine(url);
+
+                                _qrCodeItem = new QRCodeItem(_fileHelper, url);
+                                _qrCodeByteArray = _qrCodeItem.GenerateQRCodeByteArray();
+
+                                using (var qrCodeByteBuffer = NSData.FromArray(_qrCodeByteArray))
+                                {
+                                    var image = UIImage.LoadFromData(qrCodeByteBuffer);
+                                    NSOperationQueue.MainQueue.AddOperation(() => imageView.Image = image);
+                                }
+                            });
                         });
 
                         imageFound = true;
@@ -107,7 +111,7 @@ namespace ShareAsQRExtension
         {
             var path = _qrCodeItem.Path;
 
-            if (!_fileHelper.Save(_qrCodeByteArray, path))
+            if (!_fileHelper.SaveByteArray(_qrCodeByteArray, path))
                 throw new Exception("Cannot save the QR code.");
 
             Console.WriteLine("Saved the QR code to " + path + ".");
