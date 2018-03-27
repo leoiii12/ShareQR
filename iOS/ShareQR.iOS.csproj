@@ -132,7 +132,6 @@
     <BundleResource Include="Resources\xamarin_logo.png" />
     <BundleResource Include="Resources\xamarin_logo%402x.png" />
     <BundleResource Include="Resources\xamarin_logo%403x.png" />
-    <BundleResource Include="Resources\extension_tutorial_1.png" />
     <BundleResource Include="Resources\extension_tutorial_2.png" />
     <BundleResource Include="Resources\extension_tutorial_3.png" />
     <BundleResource Include="Resources\extension_tutorial_4.png" />

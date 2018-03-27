@@ -9,14 +9,11 @@ namespace ShareQR.ViewModels
 	public class ExtensionPageViewModel : BaseViewModel
 	{
 		private readonly List<string> _tutorialImages = new List<string> {
-			"extension_tutorial_1.png",
 			"extension_tutorial_2.png",
 			"extension_tutorial_3.png",
 			"extension_tutorial_4.png"
 		};
-
 		private readonly Timer _timer;
-
 
 		private string tutorialImage = "";
 		public string TutorialImage

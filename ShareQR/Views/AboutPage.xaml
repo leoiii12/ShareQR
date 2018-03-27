@@ -33,7 +33,7 @@
                     <Label.FormattedText>
                         <FormattedString>
                             <FormattedString.Spans>
-                                <Span Text="This app made by" />
+                                <Span Text="This app is made by" />
                                 <Span Text=" " />
                                 <Span Text="Leo Choi" FontAttributes="Bold" />
                                 <Span Text="." />
