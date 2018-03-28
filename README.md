@@ -10,11 +10,12 @@ ShareQR is an iOS application built with Xamarin and .NET Standard library. This
 - Open-source
 
 ## Screenshots
-![alt text](https://raw.githubusercontent.com/leoiii12/ShareQR/master/screenshots/iphone-1.PNG | width=150)
-![alt text](https://raw.githubusercontent.com/leoiii12/ShareQR/master/screenshots/iphone-2.PNG | width=150)
-![alt text](https://raw.githubusercontent.com/leoiii12/ShareQR/master/screenshots/iphone-3.PNG | width=150)
-![alt text](https://raw.githubusercontent.com/leoiii12/ShareQR/master/screenshots/iphone-4.PNG | width=150)
-![alt text](https://raw.githubusercontent.com/leoiii12/ShareQR/master/screenshots/iphone-5.PNG | width=150)
+<img src="https://raw.githubusercontent.com/leoiii12/ShareQR/master/screenshots/iphone-1.PNG" width="20%">
+<img src="https://raw.githubusercontent.com/leoiii12/ShareQR/master/screenshots/iphone-2.PNG" width="20%">
+<img src="https://raw.githubusercontent.com/leoiii12/ShareQR/master/screenshots/iphone-3.PNG" width="20%">
+<img src="https://raw.githubusercontent.com/leoiii12/ShareQR/master/screenshots/iphone-4.PNG" width="20%">
+<img src="https://raw.githubusercontent.com/leoiii12/ShareQR/master/screenshots/iphone-5.PNG" width="20%">
+
 
 ## Getting started
 You can build this project using Visual Studio for Mac 7.5 Preview.
