@@ -9,7 +9,6 @@ using Xamarin.Forms;
 
 namespace ShareQR.ViewModels
 {
-
     public class ItemsPageViewModel : BaseViewModel
     {
         public ObservableCollection<QRCodeItem> QRCodeItems { get; set; }
@@ -23,7 +22,7 @@ namespace ShareQR.ViewModels
 
             MessagingCenter.Subscribe<NewItemPage, QRCodeItem>(this, "AddItem", async (obj, item) =>
             {
-                var qrCodeItem = item as QRCodeItem;
+                var qrCodeItem = item;
 
                 if (qrCodeItem == null)
                     throw new Exception($"Not a {nameof(QRCodeItem)}.");
@@ -37,7 +36,7 @@ namespace ShareQR.ViewModels
 
             MessagingCenter.Subscribe<ItemsPage, QRCodeItem>(this, "RemoveItem", async (obj, item) =>
             {
-                var qrCodeItem = item as QRCodeItem;
+                var qrCodeItem = item;
 
                 if (qrCodeItem == null)
                     throw new Exception($"Not a {nameof(QRCodeItem)}.");
@@ -46,10 +45,7 @@ namespace ShareQR.ViewModels
                 await DataStore.DeleteItemAsync(qrCodeItem);
             });
 
-			MessagingCenter.Subscribe<App>(this, "OnResume", (obj) =>
-            {
-                this.LoadQRCodeItemsCommand.Execute(null);
-            });
+            MessagingCenter.Subscribe<App>(this, "OnResume", obj => { LoadQRCodeItemsCommand.Execute(null); });
         }
 
         async Task ExecuteLoadItemsCommand()

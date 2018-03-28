@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -21,16 +18,18 @@ namespace ShareQR.ViewModels
     public class NewItemPageViewModel : BaseViewModel
     {
         private readonly IFileHelper _fileHelper;
-		private readonly ICollection<NewItemPageViewModelCache> caches = new List<NewItemPageViewModelCache>();
+        private readonly ICollection<NewItemPageViewModelCache> _caches = new List<NewItemPageViewModelCache>();
 
-        private string inputText = "";
+        private string _inputText = "";
+
         public string InputText
         {
-            get { return inputText; }
-            set { SetProperty(ref inputText, value); }
+            get { return _inputText; }
+            set { SetProperty(ref _inputText, value); }
         }
 
         private QRCodeItem item = new QRCodeItem("");
+
         public QRCodeItem Item
         {
             get { return item; }
@@ -40,74 +39,74 @@ namespace ShareQR.ViewModels
         public NewItemPageViewModel()
         {
             Title = "New QR Code";
-			IsBusy = false;
+            IsBusy = false;
 
             using (var scope = AppContainer.Container.BeginLifetimeScope())
             {
                 _fileHelper = AppContainer.Container.Resolve<IFileHelper>();
             }
 
-            this.PropertyChanged += (object sender, PropertyChangedEventArgs e) =>
+            PropertyChanged += (sender, e) =>
             {
                 if (e.PropertyName == nameof(InputText))
-				{
-					IsBusy = true;
+                {
+                    IsBusy = true;
 
-					// Cancel previous
-					foreach (var cache in caches.Where(h => h.CancellationTokenSource.IsCancellationRequested == false))
-						cache.CancellationTokenSource.Cancel();
+                    // Cancel previous
+                    foreach (var cache in _caches.Where(h => h.CancellationTokenSource.IsCancellationRequested == false))
+                        cache.CancellationTokenSource.Cancel();
 
-					if (inputText == "") {
-						Item = new QRCodeItem("");
-						IsBusy = false;
+                    if (_inputText == "")
+                    {
+                        Item = new QRCodeItem("");
+                        IsBusy = false;
 
-						return;
-					}
+                        return;
+                    }
 
-					var qrCodeItem = new QRCodeItem(inputText);
-					GenerateNewCache(qrCodeItem);
-				}
-			};
+                    var qrCodeItem = new QRCodeItem(_inputText);
+                    GenerateNewCache(qrCodeItem);
+                }
+            };
         }
 
-		private void GenerateNewCache(QRCodeItem qrCodeItem)
-		{
-			var newCache = new NewItemPageViewModelCache();
-			newCache.QRCodeItem = qrCodeItem;
-			newCache.CancellationTokenSource = new CancellationTokenSource();
+        private void GenerateNewCache(QRCodeItem qrCodeItem)
+        {
+            var newCache = new NewItemPageViewModelCache();
+            newCache.QRCodeItem = qrCodeItem;
+            newCache.CancellationTokenSource = new CancellationTokenSource();
 
-			var cancellationToken = newCache.CancellationTokenSource.Token;
-			newCache.Task = Task.Factory.StartNew(async () =>
-			{
-				await Task.Delay(1000);            
-				cancellationToken.ThrowIfCancellationRequested();
+            var cancellationToken = newCache.CancellationTokenSource.Token;
+            newCache.Task = Task.Factory.StartNew(async () =>
+            {
+                await Task.Delay(1000);
+                cancellationToken.ThrowIfCancellationRequested();
 
-				// Save file
-				_fileHelper.SaveByteArray(qrCodeItem.GenerateQRCodeByteArray(), qrCodeItem.Path);
+                // Save file
+                _fileHelper.SaveByteArray(qrCodeItem.GenerateQRCodeByteArray(), qrCodeItem.Path);
 
-				await Task.Delay(100);            
-				cancellationToken.ThrowIfCancellationRequested();
+                await Task.Delay(100);
+                cancellationToken.ThrowIfCancellationRequested();
 
-				// Assign new item
-				Item = qrCodeItem;            
-				IsBusy = false;
-			});
+                // Assign new item
+                Item = qrCodeItem;
+                IsBusy = false;
+            });
 
-			this.caches.Add(newCache);
-		}
+            _caches.Add(newCache);
+        }
 
-		public void SaveAll()
+        public void SaveAll()
         {
             if (Item == null) return;
-            if (Item.Data == null || Item.Data == "") return;
+            if (string.IsNullOrEmpty(Item.Data)) return;
 
-			foreach (var cache in caches)
-			{
-				_fileHelper.RemoveFile(cache.QRCodeItem.Path);
-			}
+            foreach (var cache in _caches)
+            {
+                _fileHelper.RemoveFile(cache.QRCodeItem.Path);
+            }
 
             _fileHelper.SaveByteArray(Item.GenerateQRCodeByteArray(), Item.Path);
         }
-
     }
 }

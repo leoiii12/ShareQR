@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
+
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:ShareQR.Converters"
@@ -11,22 +12,22 @@
             <local:DateTimeToLocalStringConverter x:Key="dateTimeToLocalStringConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
-    
+
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Add" Clicked="AddButtonClicked" />
     </ContentPage.ToolbarItems>
-    
+
     <ContentPage.Content>
         <StackLayout>
-            <ListView x:Name="ItemsListView" 
-                ItemsSource="{Binding QRCodeItems}"
-                VerticalOptions="FillAndExpand"
-                HasUnevenRows="true"
-                RefreshCommand="{Binding LoadQRCodeItemsCommand}"
-                IsPullToRefreshEnabled="true"
-                IsRefreshing="{Binding IsBusy, Mode=OneWay}"
-                CachingStrategy="RecycleElement"
-                ItemSelected="OnItemSelected">
+            <ListView x:Name="ItemsListView"
+                      ItemsSource="{Binding QRCodeItems}"
+                      VerticalOptions="FillAndExpand"
+                      HasUnevenRows="true"
+                      RefreshCommand="{Binding LoadQRCodeItemsCommand}"
+                      IsPullToRefreshEnabled="true"
+                      IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                      CachingStrategy="RecycleElement"
+                      ItemSelected="OnItemSelected">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
@@ -44,5 +45,5 @@
             </ListView>
         </StackLayout>
     </ContentPage.Content>
-    
+
 </ContentPage>

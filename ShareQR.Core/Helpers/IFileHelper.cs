@@ -8,6 +8,6 @@
 
         bool SaveByteArray(byte[] byteArr, string path);
 
-		bool RemoveFile(string path);
+        bool RemoveFile(string path);
     }
 }

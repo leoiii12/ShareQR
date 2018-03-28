@@ -27,9 +27,9 @@ namespace ShareQR.iOS
             return Path.Combine(SharedDirectoryPath, fileName);
         }
 
-		public bool SaveByteArray(byte[] byteArr, string path)
-		{
-			var hasSaved = true;
+        public bool SaveByteArray(byte[] byteArr, string path)
+        {
+            var hasSaved = true;
 
             try
             {
@@ -45,15 +45,15 @@ namespace ShareQR.iOS
             }
 
             return hasSaved;
-		}
+        }
 
-		public bool RemoveFile(string path)
-		{
-			var hasRemoved = true;
+        public bool RemoveFile(string path)
+        {
+            var hasRemoved = true;
 
-			try
+            try
             {
-				File.Delete(path);
+                File.Delete(path);
             }
             catch (Exception e)
             {
@@ -61,7 +61,7 @@ namespace ShareQR.iOS
                 hasRemoved = false;
             }
 
-			return hasRemoved;
-		}
-	}
+            return hasRemoved;
+        }
+    }
 }

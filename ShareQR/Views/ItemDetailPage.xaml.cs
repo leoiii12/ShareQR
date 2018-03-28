@@ -4,9 +4,9 @@ using Xamarin.Forms.Xaml;
 
 namespace ShareQR.Views
 {
-	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class ItemDetailPage : ContentPage
-	{
+    [XamlCompilation(XamlCompilationOptions.Compile)]
+    public partial class ItemDetailPage : ContentPage
+    {
         ItemDetailPageViewModel viewModel;
 
         public ItemDetailPage(ItemDetailPageViewModel viewModel)

@@ -6,9 +6,10 @@ using ShareQR.Helpers;
 using Xamarin.Forms;
 
 [assembly: Dependency(typeof(FileHelper))]
+
 namespace ShareAsQRExtension
 {
-	public class FileHelper : IFileHelper
+    public class FileHelper : IFileHelper
     {
         public string SharedDirectoryPath { get; private set; }
 

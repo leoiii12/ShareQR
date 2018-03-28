@@ -2,7 +2,6 @@
 using ShareQR.Helpers;
 using ShareQR.Services;
 using ShareQR.SQLite;
-using Xamarin.Forms;
 
 namespace ShareQR
 {
@@ -17,9 +16,9 @@ namespace ShareQR
 
         protected virtual void RegisterDependencies(ContainerBuilder cb)
         {
-			// Be careful of Captive Dependency
-			cb.Register(cc => ShareQRDbContext.Create(cc.Resolve<IFileHelper>().GetSharedFilePath("ShareQR.db"))).As<ShareQRDbContext>().SingleInstance();
-			cb.RegisterType<QRCodeItemStore>().As<IQRCodeItemStore>().SingleInstance();
+            // Be careful of Captive Dependency
+            cb.Register(cc => ShareQRDbContext.Create(cc.Resolve<IFileHelper>().GetSharedFilePath("ShareQR.db"))).As<ShareQRDbContext>().SingleInstance();
+            cb.RegisterType<QRCodeItemStore>().As<IQRCodeItemStore>().SingleInstance();
         }
     }
 }

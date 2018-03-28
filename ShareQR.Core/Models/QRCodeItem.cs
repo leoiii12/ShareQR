@@ -32,7 +32,7 @@ namespace ShareQR.Models
 
         private void Initialize(IFileHelper fileHelper, string data)
         {
-			var sharedDirectoryPath = fileHelper.SharedDirectoryPath;
+            var sharedDirectoryPath = fileHelper.SharedDirectoryPath;
 
             if (data == null) throw new Exception(nameof(data) + " cannot be null.");
 
@@ -42,24 +42,21 @@ namespace ShareQR.Models
         }
 
         [Key]
-		public string Data { get; protected set; }
+        public string Data { get; protected set; }
 
         public string Path { get; protected set; }
 
         public DateTime CreateDate { get; protected set; }
 
-		[NotMapped]
-		private byte[] ByteArray { get; set; }
+        [NotMapped]
+        private byte[] ByteArray { get; set; }
 
         [NotMapped]
-        public string HashedFileName
-        {
-            get { return System.IO.Path.ChangeExtension(ComputeHashString(), ".jpg"); }
-        }
+        public string HashedFileName => System.IO.Path.ChangeExtension(ComputeHashString(), ".jpg");
 
-		private bool? _isURL;
+        private bool? _isURL;
 
-		[NotMapped]
+        [NotMapped]
         public bool IsURL
         {
             get
@@ -73,15 +70,15 @@ namespace ShareQR.Models
 
         public byte[] GenerateQRCodeByteArray()
         {
-			if (ByteArray != null) return ByteArray;
+            if (ByteArray != null) return ByteArray;
 
-			byte[] qrCodeAsBitmapByteArr;
+            byte[] qrCodeAsBitmapByteArr;
 
-            using (QRCodeGenerator qrCodeGenerator = new QRCodeGenerator())
-            using (QRCodeData qrCodeData = qrCodeGenerator.CreateQrCode(Data, QRCodeGenerator.ECCLevel.Q))
-            using (BitmapByteQRCode qrCode = new BitmapByteQRCode(qrCodeData))
+            using (var qrCodeGenerator = new QRCodeGenerator())
+            using (var qrCodeData = qrCodeGenerator.CreateQrCode(Data, QRCodeGenerator.ECCLevel.Q))
+            using (var qrCode = new BitmapByteQRCode(qrCodeData))
             {
-				ByteArray = qrCodeAsBitmapByteArr = qrCode.GetGraphic(20);
+                ByteArray = qrCodeAsBitmapByteArr = qrCode.GetGraphic(20);
             }
 
             return qrCodeAsBitmapByteArr;

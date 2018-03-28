@@ -14,119 +14,119 @@ using UIKit;
 
 namespace ShareAsQRExtension
 {
-	public partial class ActionViewController : UIViewController
-	{
-		protected ActionViewController(IntPtr handle) : base(handle)
-		{
-			// Note: this .ctor should not contain any initialization logic. 
+    public partial class ActionViewController : UIViewController
+    {
+        protected ActionViewController(IntPtr handle) : base(handle)
+        {
+            // Note: this .ctor should not contain any initialization logic. 
 
-			_fileHelper = new FileHelper();
-			_db = ShareQRDbContext.Create(_fileHelper.GetSharedFilePath("ShareQR.db"));
-			_qrCodeItemStore = new QRCodeItemStore(_db);
-		}
+            _fileHelper = new FileHelper();
+            _db = ShareQRDbContext.Create(_fileHelper.GetSharedFilePath("ShareQR.db"));
+            _qrCodeItemStore = new QRCodeItemStore(_db);
+        }
 
-		private readonly IReadOnlyList<NSString> _acceptedTypes = new List<NSString> { UTType.URL, UTType.PlainText };
+        private readonly IReadOnlyList<NSString> _acceptedTypes = new List<NSString> {UTType.URL, UTType.PlainText};
 
-		private readonly IFileHelper _fileHelper;
-		private readonly ShareQRDbContext _db;
-		private readonly IQRCodeItemStore _qrCodeItemStore;
+        private readonly IFileHelper _fileHelper;
+        private readonly ShareQRDbContext _db;
+        private readonly IQRCodeItemStore _qrCodeItemStore;
 
-		private QRCodeItem qrCodeItem;
-		private byte[] qrCodeByteArray;
+        private QRCodeItem _qrCodeItem;
+        private byte[] _qrCodeByteArray;
 
-		public override void DidReceiveMemoryWarning()
-		{
-			// Releases the view if it doesn't have a superview.
-			base.DidReceiveMemoryWarning();
+        public override void DidReceiveMemoryWarning()
+        {
+            // Releases the view if it doesn't have a superview.
+            base.DidReceiveMemoryWarning();
 
-			// Release any cached data, images, etc that aren't in use.
-		}
+            // Release any cached data, images, etc that aren't in use.
+        }
 
-		public override bool PrefersStatusBarHidden()
-		{
-			return false;
-		}
+        public override bool PrefersStatusBarHidden()
+        {
+            return false;
+        }
 
-		public override UIInterfaceOrientation PreferredInterfaceOrientationForPresentation()
-		{
-			return UIInterfaceOrientation.Portrait;
-		}
+        public override UIInterfaceOrientation PreferredInterfaceOrientationForPresentation()
+        {
+            return UIInterfaceOrientation.Portrait;
+        }
 
-		public override UIInterfaceOrientationMask GetSupportedInterfaceOrientations()
-		{
-			return UIInterfaceOrientationMask.Portrait;
-		}
+        public override UIInterfaceOrientationMask GetSupportedInterfaceOrientations()
+        {
+            return UIInterfaceOrientationMask.Portrait;
+        }
 
-		public override void ViewDidLoad()
-		{
-			base.ViewDidLoad();
+        public override void ViewDidLoad()
+        {
+            base.ViewDidLoad();
 
-			// For example, look for an image and place it into an image view.
-			// Replace this with something appropriate for the type[s] your extension supports.
-			bool imageFound = false;
+            // For example, look for an image and place it into an image view.
+            // Replace this with something appropriate for the type[s] your extension supports.
+            bool imageFound = false;
 
-			foreach (var item in ExtensionContext.InputItems)
-			{
-				foreach (var itemProvider in item.Attachments)
-				{
-					var foundType = _acceptedTypes.FirstOrDefault(at => itemProvider.HasItemConformingTo(at));
+            foreach (var item in ExtensionContext.InputItems)
+            {
+                foreach (var itemProvider in item.Attachments)
+                {
+                    var foundType = _acceptedTypes.FirstOrDefault(at => itemProvider.HasItemConformingTo(at));
 
-					if (foundType == null) continue;
+                    if (foundType == null) continue;
 
-					Task.Factory.StartNew(() =>
-					{
-						itemProvider.LoadItem(foundType, null, (urlObj, error) =>
-						{
-							var url = urlObj.ToString();
-							Console.WriteLine(url);
+                    Task.Factory.StartNew(() =>
+                    {
+                        itemProvider.LoadItem(foundType, null, (urlObj, error) =>
+                        {
+                            var url = urlObj.ToString();
+                            Console.WriteLine(url);
 
-							qrCodeItem = new QRCodeItem(_fileHelper, url);
-							qrCodeByteArray = qrCodeItem.GenerateQRCodeByteArray();
+                            _qrCodeItem = new QRCodeItem(_fileHelper, url);
+                            _qrCodeByteArray = _qrCodeItem.GenerateQRCodeByteArray();
 
-							using (var qrCodeByteBuffer = NSData.FromArray(qrCodeByteArray))
-							{
-								var image = UIImage.LoadFromData(qrCodeByteBuffer);
-								NSOperationQueue.MainQueue.AddOperation(() => imageView.Image = image);
-							}
-						});
-					});
+                            using (var qrCodeByteBuffer = NSData.FromArray(_qrCodeByteArray))
+                            {
+                                var image = UIImage.LoadFromData(qrCodeByteBuffer);
+                                NSOperationQueue.MainQueue.AddOperation(() => imageView.Image = image);
+                            }
+                        });
+                    });
 
-					imageFound = true;
-					break;
-				}
+                    imageFound = true;
+                    break;
+                }
 
-				if (imageFound)
-				{
-					NSOperationQueue.MainQueue.AddOperation(() => saveButton.Enabled = true);
+                if (imageFound)
+                {
+                    NSOperationQueue.MainQueue.AddOperation(() => saveButton.Enabled = true);
 
-					break;
-				}
-			}
-		}
+                    break;
+                }
+            }
+        }
 
-		partial void DoneClicked(UIBarButtonItem sender)
-		{
-			// Return any edited content to the host app.
-			// This template doesn't do anything, so we just echo the passed-in items.
-			ExtensionContext.CompleteRequest(ExtensionContext.InputItems, null);
-		}
+        partial void DoneClicked(UIBarButtonItem sender)
+        {
+            // Return any edited content to the host app.
+            // This template doesn't do anything, so we just echo the passed-in items.
+            ExtensionContext.CompleteRequest(ExtensionContext.InputItems, null);
+        }
 
-		partial void SaveClicked(UIBarButtonItem sender)
-		{
-			var path = qrCodeItem.Path;
+        partial void SaveClicked(UIBarButtonItem sender)
+        {
+            var path = _qrCodeItem.Path;
 
-			if (!_fileHelper.SaveByteArray(qrCodeByteArray, path))
-				throw new Exception("Cannot save the QR code.");
+            if (!_fileHelper.SaveByteArray(_qrCodeByteArray, path))
+                throw new Exception("Cannot save the QR code.");
 
-			Console.WriteLine("Saved the QR code to " + path + ".");
-			NSOperationQueue.MainQueue.AddOperation(() =>
-			{
-				saveButton.Enabled = false;
-				saveButton.Title = "Saved";
-			});
+            Console.WriteLine("Saved the QR code to " + path + ".");
+            NSOperationQueue.MainQueue.AddOperation(() =>
+            {
+                saveButton.Enabled = false;
+                saveButton.Title = "Saved";
+            });
 
-			_qrCodeItemStore.AddItemAsync(qrCodeItem);
-			Console.WriteLine("Inserted into the database.");
-		}
-	}
+            _qrCodeItemStore.AddItemAsync(_qrCodeItem);
+            Console.WriteLine("Inserted into the database.");
+        }
+    }
 }

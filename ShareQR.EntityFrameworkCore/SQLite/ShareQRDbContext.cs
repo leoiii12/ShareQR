@@ -1,8 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using ShareQR.Models;
-using ShareQR.SQLite;
-using Xamarin.Forms;
 
 namespace ShareQR.SQLite
 {
@@ -13,14 +11,14 @@ namespace ShareQR.SQLite
         public static ShareQRDbContext Create(string databasePath)
         {
             var dbContext = new ShareQRDbContext(databasePath);
-			dbContext.Database.Migrate();
+            dbContext.Database.Migrate();
 
             return dbContext;
         }
 
         protected string DatabasePath { get; set; }
 
-		protected ShareQRDbContext(string databasePath)
+        protected ShareQRDbContext(string databasePath)
         {
             if (!databasePath.EndsWith(".db", StringComparison.Ordinal))
             {
@@ -32,7 +30,7 @@ namespace ShareQR.SQLite
             DatabasePath = databasePath;
         }
 
-		protected ShareQRDbContext() : this("ShareQR.db")
+        protected ShareQRDbContext() : this("ShareQR.db")
         {
         }
 

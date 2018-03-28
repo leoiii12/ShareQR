@@ -7,18 +7,18 @@ namespace ShareQR.ViewModels
 {
     public class ItemDetailPageViewModel : BaseViewModel
     {
-		public QRCodeItem Item { get; protected set; }
+        public QRCodeItem Item { get; protected set; }
         public bool IsUrl { get; protected set; }
-		public ICommand OpenUrlCommand { get; }
+        public ICommand OpenUrlCommand { get; }
 
-        public ItemDetailPageViewModel(QRCodeItem item = null) : base()
+        public ItemDetailPageViewModel(QRCodeItem item = null)
         {
             Title = item?.Data;
 
             Item = item;
-			IsUrl = Uri.TryCreate(item?.Data, UriKind.Absolute, out Uri uriResult) && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
+            IsUrl = Uri.TryCreate(item?.Data, UriKind.Absolute, out Uri uriResult) && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
 
-			OpenUrlCommand = new Command(() => Device.OpenUri(new Uri(Item.Data)));
+            OpenUrlCommand = new Command(() => Device.OpenUri(new Uri(Item.Data)));
         }
     }
 }

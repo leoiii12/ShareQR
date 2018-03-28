@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
+
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:ShareQR.Converters"
@@ -11,7 +12,7 @@
             <local:DateTimeToLocalStringConverter x:Key="dateTimeToLocalStringConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
-    
+
     <ScrollView>
         <StackLayout Spacing="20" Padding="15">
             <!-- QR Code -->
@@ -31,5 +32,5 @@
             <Label Text="{Binding Item.CreateDate, Converter={StaticResource dateTimeToLocalStringConverter}}" FontSize="Small" />
         </StackLayout>
     </ScrollView>
-    
+
 </ContentPage>

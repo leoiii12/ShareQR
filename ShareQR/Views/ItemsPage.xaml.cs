@@ -15,7 +15,7 @@ namespace ShareQR.Views
         {
             InitializeComponent();
 
-            BindingContext = this.viewModel = new ItemsPageViewModel();
+            BindingContext = viewModel = new ItemsPageViewModel();
         }
 
         protected override void OnAppearing()
@@ -42,7 +42,7 @@ namespace ShareQR.Views
             var menuItem = sender as MenuItem;
             if (menuItem == null) return;
 
-            MessagingCenter.Send<ItemsPage, QRCodeItem>(this, "RemoveItem", (QRCodeItem) menuItem.CommandParameter);
+            MessagingCenter.Send(this, "RemoveItem", (QRCodeItem) menuItem.CommandParameter);
         }
 
         public void OnItemVisitClicked(object sender, EventArgs e)
@@ -50,9 +50,9 @@ namespace ShareQR.Views
             var menuItem = sender as MenuItem;
             if (menuItem == null) return;
 
-			var qrCodeItem = (QRCodeItem) menuItem.CommandParameter;
+            var qrCodeItem = (QRCodeItem) menuItem.CommandParameter;
 
-			Device.OpenUri(new Uri(qrCodeItem.Data));
+            Device.OpenUri(new Uri(qrCodeItem.Data));
         }
 
         async void AddButtonClicked(object sender, EventArgs e)
