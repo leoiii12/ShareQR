@@ -10,9 +10,11 @@ namespace ShareQR.ViewModels
         {
             Title = "About";
 
-            OpenWebCommand = new Command(() => Device.OpenUri(new Uri("https://leochoi.info")));
+			OpenPersonalWebsiteCommand = new Command(() => Device.OpenUri(new Uri("https://leochoi.info")));
+            OpenGithubWebsiteCommand = new Command(() => Device.OpenUri(new Uri("https://leochoi.info")));
         }
 
-        public ICommand OpenWebCommand { get; }
+		public ICommand OpenPersonalWebsiteCommand { get; }
+		public ICommand OpenGithubWebsiteCommand { get; }
     }
 }

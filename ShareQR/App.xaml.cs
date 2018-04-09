@@ -9,10 +9,12 @@ namespace ShareQR
 {
     public partial class App : Application
     {
-        public App(AppSetup setup)
-        {
-            InitializeComponent();
+		public App() {
+			InitializeComponent();
+		}
 
+		public App(AppSetup setup) : base()
+        {         
             AppContainer.Container = setup.CreateContainer();
 
             if (Device.RuntimePlatform == Device.iOS)
