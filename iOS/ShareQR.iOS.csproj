@@ -10,6 +10,7 @@
     <RootNamespace>ShareQR.iOS</RootNamespace>
     <AssemblyName>ShareQR.iOS</AssemblyName>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
+    <ReleaseVersion>1.1</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
     <DebugSymbols>true</DebugSymbols>
@@ -129,9 +130,6 @@
     <BundleResource Include="Resources\tab_feed.png" />
     <BundleResource Include="Resources\tab_feed%402x.png" />
     <BundleResource Include="Resources\tab_feed%403x.png" />
-    <BundleResource Include="Resources\xamarin_logo.png" />
-    <BundleResource Include="Resources\xamarin_logo%402x.png" />
-    <BundleResource Include="Resources\xamarin_logo%403x.png" />
     <BundleResource Include="Resources\extension_tutorial_2.png" />
     <BundleResource Include="Resources\extension_tutorial_3.png" />
     <BundleResource Include="Resources\extension_tutorial_4.png" />

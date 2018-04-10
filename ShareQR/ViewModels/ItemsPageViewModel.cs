@@ -46,7 +46,7 @@ namespace ShareQR.ViewModels
                 await DataStore.DeleteItemAsync(qrCodeItem);
             });
 
-			MessagingCenter.Subscribe<MessageService>(this, MessageService.APP_RESUMED, obj => { LoadQRCodeItemsCommand.Execute(null); });
+            MessagingCenter.Subscribe<MessageService>(this, MessageService.APP_RESUMED, obj => { LoadQRCodeItemsCommand.Execute(null); });
         }
 
         async Task ExecuteLoadItemsCommand()

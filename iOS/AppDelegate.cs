@@ -31,19 +31,19 @@ namespace ShareQR.iOS
                 foreach (NSUrlQueryItem item in allItems)
                 {
                     if (item.Name == "data")
-						data = item.Value;
+                        data = item.Value;
                 }
 
                 if (!string.IsNullOrEmpty(data))
                 {
-					IMessageService messageService;
+                    IMessageService messageService;
 
-					using (var scope = AppContainer.Container.BeginLifetimeScope())
+                    using (var scope = AppContainer.Container.BeginLifetimeScope())
                     {
-						messageService = AppContainer.Container.Resolve<IMessageService>();
+                        messageService = AppContainer.Container.Resolve<IMessageService>();
                     }
 
-					messageService.AppLaunchedFromDeepLink(data);
+                    messageService.AppLaunchedFromDeepLink(data);
                 }
             }
 

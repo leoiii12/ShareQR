@@ -43,7 +43,7 @@ namespace ShareQR.ViewModels
             backingStore = value;
             onChanged?.Invoke();
             OnPropertyChanged(propertyName);
-            
+
             return true;
         }
 

@@ -10,15 +10,15 @@ namespace ShareQR.Views
     {
         NewItemPageViewModel viewModel;
 
-		public NewItemPage() : this(new NewItemPageViewModel())
+        public NewItemPage() : this(new NewItemPageViewModel())
         {
         }
 
-		public NewItemPage(NewItemPageViewModel newItemPageViewModel)
+        public NewItemPage(NewItemPageViewModel newItemPageViewModel)
         {
             InitializeComponent();
 
-			BindingContext = viewModel = newItemPageViewModel;
+            BindingContext = viewModel = newItemPageViewModel;
         }
 
         async void OnSaveButtonClicked(object sender, EventArgs e)

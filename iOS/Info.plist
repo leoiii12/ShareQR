@@ -9,7 +9,7 @@
 	<key>CFBundleIdentifier</key>
 	<string>com.ettech.ShareQR</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>1.1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>MinimumOSVersion</key>

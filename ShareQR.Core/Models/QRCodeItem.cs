@@ -11,6 +11,8 @@ namespace ShareQR.Models
 {
     public class QRCodeItem
     {
+        private readonly IFileHelper _fileHelper;
+
         protected QRCodeItem()
         {
         }
@@ -19,20 +21,22 @@ namespace ShareQR.Models
         {
             using (var scope = AppContainer.Container.BeginLifetimeScope())
             {
-                var fileHelper = AppContainer.Container.Resolve<IFileHelper>();
-
-                Initialize(fileHelper, data);
+                _fileHelper = AppContainer.Container.Resolve<IFileHelper>();
             }
+
+            Initialize(data);
         }
 
         public QRCodeItem(IFileHelper fileHelper, String data)
         {
-            Initialize(fileHelper, data);
+            _fileHelper = fileHelper;
+
+            Initialize(data);
         }
 
-        private void Initialize(IFileHelper fileHelper, string data)
+        private void Initialize(string data)
         {
-            var sharedDirectoryPath = fileHelper.SharedDirectoryPath;
+            var sharedDirectoryPath = _fileHelper.SharedDirectoryPath;
 
             if (data == null) throw new Exception(nameof(data) + " cannot be null.");
 

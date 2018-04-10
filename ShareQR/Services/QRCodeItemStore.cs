@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Autofac;
 using Microsoft.EntityFrameworkCore;
+using ShareQR.Helpers;
 using ShareQR.Models;
 using ShareQR.SQLite;
 using SQLitePCL;
@@ -12,26 +13,14 @@ namespace ShareQR.Services
 {
     public class QRCodeItemStore : IQRCodeItemStore
     {
+        private readonly IFileHelper _fileHelper;
         private readonly ShareQRDbContext _db;
 
-        /// <summary>
-        /// <para>Construct with DI.</para>
-        /// </summary>
-        public QRCodeItemStore()
-        {
-            using (var scope = AppContainer.Container.BeginLifetimeScope())
-            {
-                _db = AppContainer.Container.Resolve<ShareQRDbContext>();
-            }
-        }
-
-        /// <summary>
-        /// <para>Construct without DI.</para>
-        /// </summary>
-        public QRCodeItemStore(ShareQRDbContext db)
+        public QRCodeItemStore(IFileHelper fileHelper, ShareQRDbContext db)
         {
             Batteries_V2.Init();
 
+            _fileHelper = fileHelper ?? throw new ArgumentNullException(nameof(fileHelper));
             _db = db ?? throw new ArgumentNullException(nameof(db));
         }
 
@@ -49,6 +38,8 @@ namespace ShareQR.Services
         {
             if (await _db.QRCodeItems.AnyAsync(i => i.Data == item.Data) == false)
                 throw new Exception("The item does not exist.");
+
+            _fileHelper.RemoveFile(item.Path);
 
             _db.QRCodeItems.Remove(item);
             await _db.SaveChangesAsync();

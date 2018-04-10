@@ -15,6 +15,10 @@ namespace ShareAsQRExtension
     {
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UILabel dataLabel { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UIImageView imageView { get; set; }
 
         [Outlet]
@@ -32,6 +36,11 @@ namespace ShareAsQRExtension
 
         void ReleaseDesignerOutlets ()
         {
+            if (dataLabel != null) {
+                dataLabel.Dispose ();
+                dataLabel = null;
+            }
+
             if (imageView != null) {
                 imageView.Dispose ();
                 imageView = null;

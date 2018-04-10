@@ -41,6 +41,12 @@
                                     <constraint id="237" firstAttribute="width" secondItem="222" secondAttribute="height" multiplier="1:1"/>
                                 </constraints>
                             </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="1336" translatesAutoresizingMaskIntoConstraints="NO" numberOfLines="2" textAlignment="center">
+                                <rect key="frame" x="25" y="469" width="270" height="0.0"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <constraints>
                             <constraint id="231" firstItem="216" firstAttribute="top" secondItem="215" secondAttribute="top"/>
@@ -50,6 +56,10 @@
                             <constraint id="235" firstItem="222" firstAttribute="leading" secondItem="215" secondAttribute="leading"/>
                             <constraint id="236" firstItem="222" firstAttribute="width" secondItem="215" secondAttribute="width"/>
                             <constraint id="453" firstItem="222" firstAttribute="centerY" secondItem="215" secondAttribute="centerY" constant="10"/>
+                            <constraint id="1338" firstItem="1336" firstAttribute="leading" secondItem="215" secondAttribute="leading" constant="25"/>
+                            <constraint id="1339" firstItem="215" firstAttribute="trailing" secondItem="1336" secondAttribute="trailing" constant="25"/>
+                            <constraint id="1340" firstItem="1336" firstAttribute="width" secondItem="215" secondAttribute="width" constant="-50"/>
+                            <constraint id="1341" firstItem="1336" firstAttribute="top" secondItem="222" secondAttribute="bottom" constant="25"/>
                         </constraints>
                     </view>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
@@ -58,6 +68,7 @@
                         <outlet property="view" destination="zMn-AG-sqS" id="Qma-de-2ek"/>
                         <outlet property="saveButton" destination="219" id="name-outlet-219"/>
                         <outlet property="imageView" destination="222" id="name-outlet-222"/>
+                        <outlet property="dataLabel" destination="1336" id="name-outlet-1336"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="X47-rx-isc" userLabel="First Responder" sceneMemberID="firstResponder"/>

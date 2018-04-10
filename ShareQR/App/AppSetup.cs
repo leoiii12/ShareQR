@@ -19,7 +19,7 @@ namespace ShareQR
             // Be careful of Captive Dependency
             cb.Register(cc => ShareQRDbContext.Create(cc.Resolve<IFileHelper>().GetSharedFilePath("ShareQR.db"))).As<ShareQRDbContext>().SingleInstance();
             cb.RegisterType<QRCodeItemStore>().As<IQRCodeItemStore>().SingleInstance();
-			cb.RegisterType<MessageService>().As<IMessageService>();
+            cb.RegisterType<MessageService>().As<IMessageService>();
         }
     }
 }

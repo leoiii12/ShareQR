@@ -22,10 +22,10 @@ namespace ShareAsQRExtension
 
             _fileHelper = new FileHelper();
             _db = ShareQRDbContext.Create(_fileHelper.GetSharedFilePath("ShareQR.db"));
-            _qrCodeItemStore = new QRCodeItemStore(_db);
+            _qrCodeItemStore = new QRCodeItemStore(_fileHelper, _db);
         }
 
-        private readonly IReadOnlyList<NSString> _acceptedTypes = new List<NSString> { UTType.URL, UTType.PlainText };
+        private readonly IReadOnlyList<NSString> _acceptedTypes = new List<NSString> {UTType.URL, UTType.PlainText};
 
         private readonly IFileHelper _fileHelper;
         private readonly ShareQRDbContext _db;
@@ -33,7 +33,7 @@ namespace ShareAsQRExtension
 
         private QRCodeItem _qrCodeItem;
         private byte[] _qrCodeByteArray;
-		private bool _isOpenedInContainingApp;
+        private bool _isOpenedInContainingApp;
 
         public override void DidReceiveMemoryWarning()
         {
@@ -58,15 +58,15 @@ namespace ShareAsQRExtension
             return UIInterfaceOrientationMask.Portrait;
         }
 
-		public override void ViewDidAppear(bool animated)
-		{
-			base.ViewDidAppear(animated);
+        public override void ViewDidAppear(bool animated)
+        {
+            base.ViewDidAppear(animated);
 
-			if (_isOpenedInContainingApp)
+            if (_isOpenedInContainingApp)
                 Done();
-		}
+        }
 
-		public override void ViewDidLoad()
+        public override void ViewDidLoad()
         {
             base.ViewDidLoad();
 
@@ -79,27 +79,30 @@ namespace ShareAsQRExtension
                 foreach (var itemProvider in item.Attachments)
                 {
                     var foundType = _acceptedTypes.FirstOrDefault(at => itemProvider.HasItemConformingTo(at));
-                    
+
                     if (foundType == null) continue;
 
-                    Task.Factory.StartNew(() =>
+
+                    itemProvider.LoadItem(foundType, null, (urlObj, error) =>
                     {
-                        itemProvider.LoadItem(foundType, null, (urlObj, error) =>
+                        var url = urlObj.ToString();
+                        Console.WriteLine(url);
+
+                        if (url.Length > 256)
                         {
-                            var url = urlObj.ToString();
-                            Console.WriteLine(url);
-
-                            if (url.Length > 256)
+                            var deepLinkingUrl = string.Format("ShareQR://com.ettech.ShareQR?data={0}", url);
+                            NSOperationQueue.MainQueue.AddOperation(() =>
                             {
-								var deepLinkingUrl = string.Format("ShareQR://com.ettech.ShareQR?data={0}", url);
-								NSOperationQueue.MainQueue.AddOperation(() =>
-								{
-									_isOpenedInContainingApp = true;
+                                _isOpenedInContainingApp = true;
 
-									OpenURL(new NSUrl(deepLinkingUrl));
-								});            
-                            }
-                            else
+                                OpenURL(new NSUrl(deepLinkingUrl));
+                            });
+                        }
+                        else
+                        {
+                            dataLabel.Text = url;
+
+                            Task.Factory.StartNew(() =>
                             {
                                 _qrCodeItem = new QRCodeItem(_fileHelper, url);
                                 _qrCodeByteArray = _qrCodeItem.GenerateQRCodeByteArray();
@@ -109,9 +112,10 @@ namespace ShareAsQRExtension
                                     var image = UIImage.LoadFromData(qrCodeByteBuffer);
                                     NSOperationQueue.MainQueue.AddOperation(() => imageView.Image = image);
                                 }
-                            }
-                        });
+                            });
+                        }
                     });
+
 
                     imageFound = true;
                     break;
@@ -128,16 +132,17 @@ namespace ShareAsQRExtension
 
         partial void DoneClicked(UIBarButtonItem sender)
         {
-			Done();
+            Done();
         }
 
-		private void Done() {
-			_db.Dispose();
+        private void Done()
+        {
+            _db.Dispose();
 
             // Return any edited content to the host app.
             // This template doesn't do anything, so we just echo the passed-in items.
             ExtensionContext.CompleteRequest(ExtensionContext.InputItems, null);
-		}
+        }
 
         partial void SaveClicked(UIBarButtonItem sender)
         {
@@ -156,25 +161,27 @@ namespace ShareAsQRExtension
             _qrCodeItemStore.AddItemAsync(_qrCodeItem);
             Console.WriteLine("Inserted into the database.");
         }
-        
-		[Export("openURL:")]
-		private bool OpenURL(NSUrl url)
+
+        [Export("openURL:")]
+        private bool OpenURL(NSUrl url)
         {
-			UIResponder responder = this as UIResponder;
+            UIResponder responder = this as UIResponder;
 
-			while (responder != null) {
-				var application = responder as UIApplication;
+            while (responder != null)
+            {
+                var application = responder as UIApplication;
 
-				if (application != null) {
-					var _url = url;
+                if (application != null)
+                {
+                    var _url = url;
 
-					application.PerformSelector(new ObjCRuntime.Selector("openURL:"), _url, 0);
-					           
-					return true;
-				}
+                    application.PerformSelector(new ObjCRuntime.Selector("openURL:"), _url, 0);
 
-				responder = responder.NextResponder;
-			}
+                    return true;
+                }
+
+                responder = responder.NextResponder;
+            }
 
             return false;
         }
