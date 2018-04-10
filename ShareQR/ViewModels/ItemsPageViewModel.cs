@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using ShareQR.Models;
+using ShareQR.Services;
 using ShareQR.Views;
 using Xamarin.Forms;
 
@@ -45,7 +46,7 @@ namespace ShareQR.ViewModels
                 await DataStore.DeleteItemAsync(qrCodeItem);
             });
 
-            MessagingCenter.Subscribe<App>(this, "OnResume", obj => { LoadQRCodeItemsCommand.Execute(null); });
+			MessagingCenter.Subscribe<MessageService>(this, MessageService.APP_RESUMED, obj => { LoadQRCodeItemsCommand.Execute(null); });
         }
 
         async Task ExecuteLoadItemsCommand()

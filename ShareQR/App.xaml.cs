@@ -1,6 +1,5 @@
-﻿using Microsoft.AppCenter;
-using Microsoft.AppCenter.Analytics;
-using Microsoft.AppCenter.Crashes;
+﻿using Autofac;
+using ShareQR.Services;
 using ShareQR.Views;
 using Xamarin.Forms;
 using Device = Xamarin.Forms.Device;
@@ -8,19 +7,21 @@ using Device = Xamarin.Forms.Device;
 namespace ShareQR
 {
     public partial class App : Application
-    {
-		public App() {
+    {      
+		public App(AppSetup setup)
+        {
 			InitializeComponent();
-		}
 
-		public App(AppSetup setup) : base()
-        {         
             AppContainer.Container = setup.CreateContainer();
 
-            if (Device.RuntimePlatform == Device.iOS)
+			if (Device.RuntimePlatform == Device.iOS)
                 MainPage = new MainPage();
             else
                 MainPage = new NavigationPage(new MainPage());
+
+			MessagingCenter.Subscribe<MessageService, string>(this, MessageService.APP_LAUNCHD_FROM_DEEP_LINK, (sender, data) => {
+				MainPage.Navigation.PushModalAsync(new NavigationPage(new NewItemPage(new ViewModels.NewItemPageViewModel(data))));
+            });
         }
 
         protected override void OnStart()
@@ -32,7 +33,14 @@ namespace ShareQR
         {
             base.OnResume();
 
-            MessagingCenter.Send(this, "OnResume");
-        }
+			IMessageService messageService;
+
+            using (var scope = AppContainer.Container.BeginLifetimeScope())
+            {
+                messageService = AppContainer.Container.Resolve<IMessageService>();
+            }
+
+			messageService.AppResumed();
+        }      
     }
 }

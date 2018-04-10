@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Autofac;
 using ShareQR.Helpers;
 using ShareQR.Models;
+using ShareQR.Services;
+using Xamarin.Forms;
 
 namespace ShareQR.ViewModels
 {
@@ -36,7 +38,11 @@ namespace ShareQR.ViewModels
             set { SetProperty(ref item, value); }
         }
 
-        public NewItemPageViewModel()
+        public NewItemPageViewModel() : this("")
+		{
+		}
+
+		public NewItemPageViewModel(string initialData)
         {
             Title = "New QR Code";
             IsBusy = false;
@@ -64,10 +70,10 @@ namespace ShareQR.ViewModels
                         return;
                     }
 
-                    var qrCodeItem = new QRCodeItem(_inputText);
-                    GenerateNewCache(qrCodeItem);
+                    GenerateNewCache(new QRCodeItem(_inputText));
                 }
             };
+			InputText = initialData;
         }
 
         private void GenerateNewCache(QRCodeItem qrCodeItem)

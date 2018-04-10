@@ -25,7 +25,7 @@ namespace ShareAsQRExtension
             _qrCodeItemStore = new QRCodeItemStore(_db);
         }
 
-        private readonly IReadOnlyList<NSString> _acceptedTypes = new List<NSString> {UTType.URL, UTType.PlainText};
+        private readonly IReadOnlyList<NSString> _acceptedTypes = new List<NSString> { UTType.URL, UTType.PlainText };
 
         private readonly IFileHelper _fileHelper;
         private readonly ShareQRDbContext _db;
@@ -33,6 +33,7 @@ namespace ShareAsQRExtension
 
         private QRCodeItem _qrCodeItem;
         private byte[] _qrCodeByteArray;
+		private bool _isOpenedInContainingApp;
 
         public override void DidReceiveMemoryWarning()
         {
@@ -57,7 +58,15 @@ namespace ShareAsQRExtension
             return UIInterfaceOrientationMask.Portrait;
         }
 
-        public override void ViewDidLoad()
+		public override void ViewDidAppear(bool animated)
+		{
+			base.ViewDidAppear(animated);
+
+			if (_isOpenedInContainingApp)
+                Done();
+		}
+
+		public override void ViewDidLoad()
         {
             base.ViewDidLoad();
 
@@ -70,7 +79,7 @@ namespace ShareAsQRExtension
                 foreach (var itemProvider in item.Attachments)
                 {
                     var foundType = _acceptedTypes.FirstOrDefault(at => itemProvider.HasItemConformingTo(at));
-
+                    
                     if (foundType == null) continue;
 
                     Task.Factory.StartNew(() =>
@@ -80,13 +89,26 @@ namespace ShareAsQRExtension
                             var url = urlObj.ToString();
                             Console.WriteLine(url);
 
-                            _qrCodeItem = new QRCodeItem(_fileHelper, url);
-                            _qrCodeByteArray = _qrCodeItem.GenerateQRCodeByteArray();
-
-                            using (var qrCodeByteBuffer = NSData.FromArray(_qrCodeByteArray))
+                            if (url.Length > 256)
                             {
-                                var image = UIImage.LoadFromData(qrCodeByteBuffer);
-                                NSOperationQueue.MainQueue.AddOperation(() => imageView.Image = image);
+								var deepLinkingUrl = string.Format("ShareQR://com.ettech.ShareQR?data={0}", url);
+								NSOperationQueue.MainQueue.AddOperation(() =>
+								{
+									_isOpenedInContainingApp = true;
+
+									OpenURL(new NSUrl(deepLinkingUrl));
+								});            
+                            }
+                            else
+                            {
+                                _qrCodeItem = new QRCodeItem(_fileHelper, url);
+                                _qrCodeByteArray = _qrCodeItem.GenerateQRCodeByteArray();
+
+                                using (var qrCodeByteBuffer = NSData.FromArray(_qrCodeByteArray))
+                                {
+                                    var image = UIImage.LoadFromData(qrCodeByteBuffer);
+                                    NSOperationQueue.MainQueue.AddOperation(() => imageView.Image = image);
+                                }
                             }
                         });
                     });
@@ -106,10 +128,16 @@ namespace ShareAsQRExtension
 
         partial void DoneClicked(UIBarButtonItem sender)
         {
+			Done();
+        }
+
+		private void Done() {
+			_db.Dispose();
+
             // Return any edited content to the host app.
             // This template doesn't do anything, so we just echo the passed-in items.
             ExtensionContext.CompleteRequest(ExtensionContext.InputItems, null);
-        }
+		}
 
         partial void SaveClicked(UIBarButtonItem sender)
         {
@@ -127,6 +155,28 @@ namespace ShareAsQRExtension
 
             _qrCodeItemStore.AddItemAsync(_qrCodeItem);
             Console.WriteLine("Inserted into the database.");
+        }
+        
+		[Export("openURL:")]
+		private bool OpenURL(NSUrl url)
+        {
+			UIResponder responder = this as UIResponder;
+
+			while (responder != null) {
+				var application = responder as UIApplication;
+
+				if (application != null) {
+					var _url = url;
+
+					application.PerformSelector(new ObjCRuntime.Selector("openURL:"), _url, 0);
+					           
+					return true;
+				}
+
+				responder = responder.NextResponder;
+			}
+
+            return false;
         }
     }
 }
